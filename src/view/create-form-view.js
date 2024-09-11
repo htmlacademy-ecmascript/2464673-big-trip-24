@@ -113,7 +113,7 @@ function createFormViewTemplate() {
         </form>`;
 }
 
-export default class CreateForm {
+export default class CreateFormViev {
   getTemplate() {
     return createFormViewTemplate();
   }
