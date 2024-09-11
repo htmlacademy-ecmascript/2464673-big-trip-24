@@ -4,7 +4,7 @@ function createListTemplate() {
   return '<ul class="trip-events__list"></ul>';
 }
 
-export default class List {
+export default class ListView {
   getTemplate() {
     return createListTemplate();
   }
@@ -19,13 +19,5 @@ export default class List {
 
   removeElement() {
     this.element = null;
-  }
-
-  addItem(itemElement) {
-    const list = this.getElement();
-    const li = document.createElement('li');
-    li.className = 'trip-events__item';
-    li.appendChild(itemElement);
-    list.appendChild(li);
   }
 }
