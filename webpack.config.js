@@ -39,6 +39,10 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: ['styl-lader', 'css-loader']
+      },
     ],
   },
 };
