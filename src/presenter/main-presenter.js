@@ -8,15 +8,17 @@ import { EditType } from '../const.js';
 export default class MainPresenter {
   eventsList = new ListView();
 
-  constructor({boardContainer, pointsModel}) {
+  constructor({boardContainer, pointsModel, offersModel, destinationsModel}) {
     this.boardContainer = boardContainer;
     this.pointsModel = pointsModel;
+    this.offersModel = offersModel;
+    this.destinationsModel = destinationsModel;
   }
 
   init() {
     this.points = [...this.pointsModel.getPoints()];
-    this.offers = [...this.pointsModel.getOffers()];
-    this.destinations = [...this.pointsModel.getDestinations()];
+    this.offers = [...this.offersModel.getOffers()];
+    this.destinations = [...this.destinationsModel.getDestinations()];
 
     render(new SortListView(), this.boardContainer);
     render(this.eventsList, this.boardContainer);

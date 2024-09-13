@@ -15,64 +15,64 @@ function createEditPointEventTypeTemplate(pointType) {
 }
 
 function createEditPointOfferContainerTemplate(offersTemplate) {
-  if (offersTemplate) {
-    return (
-      `<section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-        <div class="event__available-offers">
-          ${offersTemplate}
-        </div>
-      </section>`
-    );
+  if (!offersTemplate) {
+    return '';
   }
-  return '';
+  return (
+    `<section class="event__section  event__section--offers">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      <div class="event__available-offers">
+        ${offersTemplate}
+      </div>
+    </section>`
+  );
 }
 
 function createEditPointOfferTemplate (offersPoint, offers) {
-  if (offersPoint.offers) {
-    return offersPoint.offers.map(({title, price, id}) => {
-      const offerClassName = title.split(' ').findLast((word) => word.length > 3).toLowerCase();
-      return (
-        `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerClassName}-1" type="checkbox" name="event-offer-${offerClassName}" ${offers.includes(id) ? 'checked' : ''}>
-        <label class="event__offer-label" for="event-offer-${offerClassName}-1">
-          <span class="event__offer-title">${title}</span>
-          +€&nbsp;
-          <span class="event__offer-price">${price}</span>
-        </label>
-      </div>`
-      );
-    }).join('');
+  if (!offersPoint.offers) {
+    return '';
   }
-  return '';
+  return offersPoint.offers.map(({title, price, id}) => {
+    const offerClassName = title.split(' ').findLast((word) => word.length > 3).toLowerCase();
+    return (
+      `<div class="event__offer-selector">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerClassName}-1" type="checkbox" name="event-offer-${offerClassName}" ${offers.includes(id) ? 'checked' : ''}>
+      <label class="event__offer-label" for="event-offer-${offerClassName}-1">
+        <span class="event__offer-title">${title}</span>
+        +€&nbsp;
+        <span class="event__offer-price">${price}</span>
+      </label>
+    </div>`
+    );
+  }).join('');
 }
 
 function createEditPointDestinationTemplate(destinationPoint, editType) {
-  if (destinationPoint) {
-    return (
-      editType === EditType.ADD
-        ? destinationPoint.description
-        : `${destinationPoint.description}
-          <div class="event__photos-container">
-            <div class="event__photos-tape">
-            ${destinationPoint.pictures.map(({src, description}) => `<img class="event__photo" src="${src}" alt="${description}"></img>`).join('')}
-            </div>
-          </div>`
-    );
+  if (!destinationPoint) {
+    return '';
   }
-  return '';
+  return (
+    editType === EditType.ADD
+      ? destinationPoint.description
+      : `${destinationPoint.description}
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+          ${destinationPoint.pictures.map(({src, description}) => `<img class="event__photo" src="${src}" alt="${description}"></img>`).join('')}
+          </div>
+        </div>`
+  );
 }
 
 function createEditPointDestinationContainerTemplate(destinationTemplate) {
-  if (destinationTemplate) {
-    return (
-      `<section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${destinationTemplate}</p>
-      </section>`
-    );
+  if (!destinationTemplate) {
+    return '';
   }
-  return '';
+  return (
+    `<section class="event__section  event__section--destination">
+      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+      <p class="event__destination-description">${destinationTemplate}</p>
+    </section>`
+  );
 }
 
 function createEditPointButtonNegativeTemplate(editType) {
