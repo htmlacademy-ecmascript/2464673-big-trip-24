@@ -2,9 +2,9 @@ import { mockOffers } from '../mocks.js/offers';
 
 
 export default class PointsModel {
-  offers = mockOffers;
+  #offers = mockOffers;
 
   getOffers() {
-    return this.offers;
+    return this.#offers;
   }
 }

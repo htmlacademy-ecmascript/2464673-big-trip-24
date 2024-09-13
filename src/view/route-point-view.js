@@ -1,6 +1,6 @@
-import { createElement } from '../render';
 import { DateFormat } from '../const';
 import { capitalizedString, humanizeDate, calculateDuration } from '../utils';
+import AbstractView from '../framework/view/abstract-view';
 
 const createPointTitleTempate = (destination, type) => {
   const title = capitalizedString(type);
@@ -81,26 +81,19 @@ const createPointViewTemplate = (point, offersApp, destinationsApp) => {
     </li>`
   );
 };
-export default class RoutePointView {
+export default class RoutePointView extends AbstractView {
+  #point;
+  #offersApp;
+  #destinationsApp;
   constructor({point, offers, destinations}) {
-    this.point = point;
-    this.offersApp = offers;
-    this.destinationsApp = destinations;
+    super();
+    this.#point = point;
+    this.#offersApp = offers;
+    this.#destinationsApp = destinations;
   }
 
-  getTemplate() {
-    return createPointViewTemplate(this.point, this.offersApp, this.destinationsApp);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createPointViewTemplate(this.#point, this.#offersApp, this.#destinationsApp);
   }
 }
 

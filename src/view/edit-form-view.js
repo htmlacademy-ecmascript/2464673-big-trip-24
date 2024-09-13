@@ -1,7 +1,7 @@
-import { createElement } from '../render';
 import { EditType, EventType } from '../const';
 import { capitalizedString } from '../utils';
 import { BLANK_POINT } from '../const';
+import AbstractView from '../framework/view/abstract-view';
 
 function createEditPointEventTypeTemplate(pointType) {
   return (
@@ -158,26 +158,20 @@ function createEditFormTemplate(point, offersApp, destinationsApp, editType) {
   );
 }
 
-export default class EditFormView {
+export default class EditFormView extends AbstractView{
+  #points;
+  #offersApp;
+  #destinationsApp;
+  #editType;
   constructor({points = BLANK_POINT, offers, destinations, editType}) {
-    this.points = points;
-    this.offersApp = offers;
-    this.destinationsApp = destinations;
-    this.editType = editType;
+    super();
+    this.#points = points;
+    this.#offersApp = offers;
+    this.#destinationsApp = destinations;
+    this.#editType = editType;
   }
 
-  getTemplate() {
-    return createEditFormTemplate(this.points, this.offersApp, this.destinationsApp, this.editType);
-  }
-
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createEditFormTemplate(this.#points, this.#offersApp, this.#destinationsApp, this.#editType);
   }
 }
