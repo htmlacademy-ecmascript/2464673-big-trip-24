@@ -1,6 +1,6 @@
-import { createElement } from '../render';
 import { DateFormat } from '../const';
 import { capitalizedString, humanizeDate, calculateDuration } from '../utils';
+import AbstractView from '../framework/view/abstract-view';
 
 const createPointTitleTempate = (destination, type) => {
   const title = capitalizedString(type);
@@ -12,18 +12,18 @@ const createPointTitleTempate = (destination, type) => {
 };
 
 const createPointOffersTemplate = (offersPoint, offers) => {
-  if (offersPoint.offers) {
-    const filteredOffers = offersPoint.offers.filter((offer) => offers.includes(offer.id));
-    return (
-      filteredOffers.map(({title, price}) => (
-        `<li class="event__offer">
-          <span class="event__offer-title">${title}</span>
-          &plus;&euro;&nbsp;
-          <span class="event__offer-price">${price}</span>
-        </li>`)).join('')
-    );
+  if (!offersPoint.offers) {
+    return '';
   }
-  return '';
+  const filteredOffers = offersPoint.offers.filter((offer) => offers.includes(offer.id));
+  return (
+    filteredOffers.map(({title, price}) => (
+      `<li class="event__offer">
+        <span class="event__offer-title">${title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${price}</span>
+      </li>`)).join('')
+  );
 };
 
 const createPointViewTemplate = (point, offersApp, destinationsApp) => {
@@ -81,26 +81,32 @@ const createPointViewTemplate = (point, offersApp, destinationsApp) => {
     </li>`
   );
 };
-export default class RoutePointView {
-  constructor({point, offers, destinations}) {
-    this.point = point;
-    this.offersApp = offers;
-    this.destinationsApp = destinations;
+export default class RoutePointView extends AbstractView {
+  #point = null;
+  #offersApp = null;
+  #destinationsApp = null;
+  #onOpenEditButtonClick = null;
+  constructor({point, offers, destinations, onOpenEditButtonClick}) {
+    super();
+    this.#point = point;
+    this.#offersApp = offers;
+    this.#destinationsApp = destinations;
+    this.#onOpenEditButtonClick = onOpenEditButtonClick;
+    this.#setEventListeners();
+
   }
 
-  getTemplate() {
-    return createPointViewTemplate(this.point, this.offersApp, this.destinationsApp);
+  get template() {
+    return createPointViewTemplate(this.#point, this.#offersApp, this.#destinationsApp);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
+  #setEventListeners() {
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onOpenEditButtonClickHandler);
   }
 
-  removeElement() {
-    this.element = null;
-  }
+  #onOpenEditButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onOpenEditButtonClick();
+  };
 }
 

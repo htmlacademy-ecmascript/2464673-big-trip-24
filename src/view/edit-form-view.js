@@ -1,7 +1,7 @@
-import { createElement } from '../render';
 import { EditType, EventType } from '../const';
 import { capitalizedString } from '../utils';
 import { BLANK_POINT } from '../const';
+import AbstractView from '../framework/view/abstract-view';
 
 function createEditPointEventTypeTemplate(pointType) {
   return (
@@ -15,64 +15,64 @@ function createEditPointEventTypeTemplate(pointType) {
 }
 
 function createEditPointOfferContainerTemplate(offersTemplate) {
-  if (offersTemplate) {
-    return (
-      `<section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-        <div class="event__available-offers">
-          ${offersTemplate}
-        </div>
-      </section>`
-    );
+  if (!offersTemplate) {
+    return '';
   }
-  return '';
+  return (
+    `<section class="event__section  event__section--offers">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      <div class="event__available-offers">
+        ${offersTemplate}
+      </div>
+    </section>`
+  );
 }
 
 function createEditPointOfferTemplate (offersPoint, offers) {
-  if (offersPoint.offers) {
-    return offersPoint.offers.map(({title, price, id}) => {
-      const offerClassName = title.split(' ').findLast((word) => word.length > 3).toLowerCase();
-      return (
-        `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerClassName}-1" type="checkbox" name="event-offer-${offerClassName}" ${offers.includes(id) ? 'checked' : ''}>
-        <label class="event__offer-label" for="event-offer-${offerClassName}-1">
-          <span class="event__offer-title">${title}</span>
-          +€&nbsp;
-          <span class="event__offer-price">${price}</span>
-        </label>
-      </div>`
-      );
-    }).join('');
+  if (!offersPoint.offers) {
+    return '';
   }
-  return '';
+  return offersPoint.offers.map(({title, price, id}) => {
+    const offerClassName = title.split(' ').findLast((word) => word.length > 3).toLowerCase();
+    return (
+      `<div class="event__offer-selector">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerClassName}-1" type="checkbox" name="event-offer-${offerClassName}" ${offers.includes(id) ? 'checked' : ''}>
+      <label class="event__offer-label" for="event-offer-${offerClassName}-1">
+        <span class="event__offer-title">${title}</span>
+        +€&nbsp;
+        <span class="event__offer-price">${price}</span>
+      </label>
+    </div>`
+    );
+  }).join('');
 }
 
 function createEditPointDestinationTemplate(destinationPoint, editType) {
-  if (destinationPoint) {
-    return (
-      editType === EditType.ADD
-        ? destinationPoint.description
-        : `${destinationPoint.description}
-          <div class="event__photos-container">
-            <div class="event__photos-tape">
-            ${destinationPoint.pictures.map(({src, description}) => `<img class="event__photo" src="${src}" alt="${description}"></img>`).join('')}
-            </div>
-          </div>`
-    );
+  if (!destinationPoint) {
+    return '';
   }
-  return '';
+  return (
+    editType === EditType.ADD
+      ? destinationPoint.description
+      : `${destinationPoint.description}
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+          ${destinationPoint.pictures.map(({src, description}) => `<img class="event__photo" src="${src}" alt="${description}"></img>`).join('')}
+          </div>
+        </div>`
+  );
 }
 
 function createEditPointDestinationContainerTemplate(destinationTemplate) {
-  if (destinationTemplate) {
-    return (
-      `<section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${destinationTemplate}</p>
-      </section>`
-    );
+  if (!destinationTemplate) {
+    return '';
   }
-  return '';
+  return (
+    `<section class="event__section  event__section--destination">
+      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+      <p class="event__destination-description">${destinationTemplate}</p>
+    </section>`
+  );
 }
 
 function createEditPointButtonNegativeTemplate(editType) {
@@ -158,26 +158,43 @@ function createEditFormTemplate(point, offersApp, destinationsApp, editType) {
   );
 }
 
-export default class EditFormView {
-  constructor({points = BLANK_POINT, offers, destinations, editType}) {
-    this.points = points;
-    this.offersApp = offers;
-    this.destinationsApp = destinations;
-    this.editType = editType;
+export default class EditFormView extends AbstractView {
+  #point;
+  #offersApp;
+  #destinationsApp;
+  #editType;
+  #onCloseEditButtonClick;
+  #onSubmitButtonClick;
+
+  constructor({point: point = BLANK_POINT, offers, destinations, editType, onCloseEditButtonClick, onSubmitButtonClick}) {
+    super();
+    this.#point = point;
+    this.#offersApp = offers;
+    this.#destinationsApp = destinations;
+    this.#editType = editType;
+    this.#onCloseEditButtonClick = onCloseEditButtonClick;
+    this.#onSubmitButtonClick = onSubmitButtonClick;
+    this.#setEventListeners();
   }
 
-  getTemplate() {
-    return createEditFormTemplate(this.points, this.offersApp, this.destinationsApp, this.editType);
+  get template() {
+    return createEditFormTemplate(this.#point, this.#offersApp, this.#destinationsApp, this.#editType);
   }
 
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
+  #setEventListeners() {
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeOpenEditButtonClickHandler);
+
+    this.element.querySelector('.event__save-btn').addEventListener('submit', this.#submitButtonClickHandler);
   }
 
-  removeElement() {
-    this.element = null;
-  }
+  #closeOpenEditButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onCloseEditButtonClick();
+  };
+
+  #submitButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onSubmitButtonClick();
+  };
+
 }
