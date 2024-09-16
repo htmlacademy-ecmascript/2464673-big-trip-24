@@ -158,20 +158,43 @@ function createEditFormTemplate(point, offersApp, destinationsApp, editType) {
   );
 }
 
-export default class EditFormView extends AbstractView{
-  #points;
+export default class EditFormView extends AbstractView {
+  #point;
   #offersApp;
   #destinationsApp;
   #editType;
-  constructor({points = BLANK_POINT, offers, destinations, editType}) {
+  #onCloseEditButtonClick;
+  #onSubmitButtonClick;
+
+  constructor({point: point = BLANK_POINT, offers, destinations, editType, onCloseEditButtonClick, onSubmitButtonClick}) {
     super();
-    this.#points = points;
+    this.#point = point;
     this.#offersApp = offers;
     this.#destinationsApp = destinations;
     this.#editType = editType;
+    this.#onCloseEditButtonClick = onCloseEditButtonClick;
+    this.#onSubmitButtonClick = onSubmitButtonClick;
+    this.#setEventListeners();
   }
 
   get template() {
-    return createEditFormTemplate(this.#points, this.#offersApp, this.#destinationsApp, this.#editType);
+    return createEditFormTemplate(this.#point, this.#offersApp, this.#destinationsApp, this.#editType);
   }
+
+  #setEventListeners() {
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeOpenEditButtonClickHandler);
+
+    this.element.querySelector('.event__save-btn').addEventListener('submit', this.#submitButtonClickHandler);
+  }
+
+  #closeOpenEditButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onCloseEditButtonClick();
+  };
+
+  #submitButtonClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#onSubmitButtonClick();
+  };
+
 }
