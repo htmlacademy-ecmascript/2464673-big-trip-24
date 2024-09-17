@@ -9,8 +9,19 @@ const DURATION_FORMATS = {
   mins: 'mm[M]'
 };
 
+const EmptyPhrase = {
+  NO_POINTS: 'Click New Event to create your first point'
+};
+
 const MSEC_IN_HOUR = MSEC_IN_SEC * SEC_IN_MIN * MIN_IN_HOUR;
 const MSEC_IN_DAY = MSEC_IN_HOUR * HOUR_IN_DAY;
+
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past'
+};
 
 const EventType = {
   TAXI: 'taxi',
@@ -56,6 +67,6 @@ const BLANK_POINT = {
 
 const POINT_COUNT = 9;
 
-export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS, MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType, DateFormat, EditType};
+export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS, MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType, DateFormat, EditType, FilterType, EmptyPhrase};
 
 

@@ -3,8 +3,9 @@ import EditFormView from '../view/edit-form-view';
 import RoutePointView from '../view/route-point-view';
 import SortListView from '../view/sort-list-view';
 import ListView from '../view/list-view.js';
+import ListMessageView from '../view/list-message-view.js';
 import { render, replace } from '../framework/render';
-import { EditType } from '../const.js';
+import { EditType, EmptyPhrase } from '../const.js';
 
 export default class MainPresenter {
   #eventsList = new ListView();
@@ -13,8 +14,8 @@ export default class MainPresenter {
   #offersModel = null;
   #destinationsModel = null;
   #points = [];
-  #offers = null;
-  #destinations = null;
+  #offers = [];
+  #destinations = [];
   constructor({ boardContainer, pointsModel, offersModel, destinationsModel }) {
     this.#boardContainer = boardContainer;
     this.#pointsModel = pointsModel;
@@ -23,12 +24,15 @@ export default class MainPresenter {
   }
 
   init() {
-    this.#points = [...this.#pointsModel.points];
+    this.#points = [];
     this.#offers = [...this.#offersModel.offers];
     this.#destinations = [...this.#destinationsModel.destinations];
 
     render(new SortListView(), this.#boardContainer);
     render(this.#eventsList, this.#boardContainer);
+    if(this.#points.length === 0) {
+      render(new ListMessageView({message: EmptyPhrase.NO_POINTS}), this.#eventsList.element);
+    }
     for (let i = 0; i < this.#points.length; i++) {
       this.#renderPoint(this.#points[i], this.#offers, this.#destinations);
     }
