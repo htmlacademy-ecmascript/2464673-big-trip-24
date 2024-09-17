@@ -1,4 +1,4 @@
-import { getRandomPoint } from '../mocks.js/points';
+import { getRandomPoint } from '../mocks/points';
 import { POINT_COUNT } from '../const';
 
 export default class PointsModel {

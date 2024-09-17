@@ -1,4 +1,4 @@
-import { mockDestinations } from '../mocks.js/destination';
+import { mockDestinations } from '../mocks/destination';
 
 export default class PointsModel {
   #destinations = mockDestinations;

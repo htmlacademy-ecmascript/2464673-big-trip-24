@@ -1,4 +1,4 @@
-import { mockOffers } from '../mocks.js/offers';
+import { mockOffers } from '../mocks/offers';
 
 
 export default class PointsModel {

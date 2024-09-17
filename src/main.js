@@ -1,4 +1,5 @@
 import { render, RenderPosition } from './framework/render.js';
+import { generateFilter } from './mocks/filter.js';
 import InfoView from './view/info-view.js';
 import FilterView from './view/filter-view.js';
 import MainPresenter from './presenter/main-presenter.js';
@@ -15,10 +16,10 @@ const pointsModel = new PointsModel();
 const offersModel = new OffersModel();
 const destinationsModel = new DestinationsModel();
 const boardPresenter = new MainPresenter({boardContainer: siteSortElement, pointsModel, offersModel, destinationsModel});
-
+const filters = generateFilter(pointsModel.points);
 
 render(new InfoView(), infoElement, RenderPosition.AFTERBEGIN);
-render(new FilterView(), siteHeaderElement);
+render(new FilterView({filters}), siteHeaderElement);
 
 boardPresenter.init();
 
