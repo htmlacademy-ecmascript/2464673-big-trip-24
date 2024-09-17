@@ -24,7 +24,7 @@ export default class MainPresenter {
   }
 
   init() {
-    this.#points = [];
+    this.#points = [...this.#pointsModel.points];
     this.#offers = [...this.#offersModel.offers];
     this.#destinations = [...this.#destinationsModel.destinations];
 
