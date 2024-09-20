@@ -4,7 +4,7 @@ function createEmptyListPointTemplate(message) {
   return `<p class="trip-events__msg">${message}</p>`;
 }
 
-export default class ListMessageView extends AbstractView {
+export default class EmptyPointView extends AbstractView {
   #message = null;
 
   constructor({ message }) {

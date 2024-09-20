@@ -1,5 +1,5 @@
 import { EditType, EventType } from '../const';
-import { capitalizedString } from '../utils';
+import { capitalizedString } from '../utils-common';
 import { BLANK_POINT } from '../const';
 import AbstractView from '../framework/view/abstract-view';
 
@@ -158,7 +158,7 @@ function createEditFormTemplate(point, offersApp, destinationsApp, editType) {
   );
 }
 
-export default class EditFormView extends AbstractView {
+export default class FormEditView extends AbstractView {
   #point;
   #offersApp;
   #destinationsApp;

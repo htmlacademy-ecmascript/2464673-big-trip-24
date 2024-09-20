@@ -1,5 +1,5 @@
 import { DateFormat } from '../const';
-import { capitalizedString, humanizeDate, calculateDuration } from '../utils';
+import { capitalizedString, humanizeDate, calculateDuration } from '../utils-common';
 import AbstractView from '../framework/view/abstract-view';
 
 const createPointTitleTempate = (destination, type) => {

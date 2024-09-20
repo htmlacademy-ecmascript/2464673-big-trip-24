@@ -23,6 +23,11 @@ const FilterType = {
   PAST: 'past'
 };
 
+const Attribute = {
+  CHECKED: 'checked',
+  DISABLED: 'disabled'
+};
+
 const EventType = {
   TAXI: 'taxi',
   BUS: 'bus',
@@ -69,6 +74,6 @@ const BLANK_POINT = {
 
 const POINT_COUNT = 9;
 
-export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS, MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType, DateFormat, EditType, FilterType, EmptyPhrase};
+export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS, MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType, DateFormat, EditType, FilterType, EmptyPhrase, Attribute};
 
 

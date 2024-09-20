@@ -1,9 +1,9 @@
 // import CreateFormView from '../view/create-form-view';
-import EditFormView from '../view/edit-form-view';
+import FormEditView from '../view/form-edit-view.js';
 import RoutePointView from '../view/route-point-view';
 import SortListView from '../view/sort-list-view';
-import ListView from '../view/list-view.js';
-import ListMessageView from '../view/list-message-view.js';
+import ListView from '../view/list-view';
+import EmptyPoinView from '../view/empty-point-view';
 import { render, replace } from '../framework/render';
 import { EditType, EmptyPhrase } from '../const.js';
 
@@ -31,7 +31,7 @@ export default class MainPresenter {
     render(new SortListView(), this.#boardContainer);
     render(this.#eventsList, this.#boardContainer);
     if(this.#points.length === 0) {
-      render(new ListMessageView({message: EmptyPhrase.NO_POINTS}), this.#eventsList.element);
+      render(new EmptyPoinView({message: EmptyPhrase.NO_POINTS}), this.#eventsList.element);
     }
     for (let i = 0; i < this.#points.length; i++) {
       this.#renderPoint(this.#points[i], this.#offers, this.#destinations);
@@ -71,7 +71,7 @@ export default class MainPresenter {
       onOpenEditButtonClick
     });
 
-    const editPointComponent = new EditFormView({
+    const pointEditComponent = new FormEditView({
       point,
       offers,
       destinations,
@@ -80,11 +80,11 @@ export default class MainPresenter {
     });
 
     function replacePointToEditPoint() {
-      replace(editPointComponent, pointComponent);
+      replace(pointEditComponent, pointComponent);
     }
 
     function replaceEditPointToPoint() {
-      replace(pointComponent, editPointComponent);
+      replace(pointComponent, pointEditComponent);
     }
 
     render(pointComponent, this.#eventsList.element);
