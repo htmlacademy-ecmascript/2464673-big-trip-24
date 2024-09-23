@@ -2,12 +2,14 @@ import SortListView from '../view/sort-list-view';
 import PoinPresenter from './point-presenter.js';
 import ListView from '../view/list-view';
 import EmptyPoinView from '../view/empty-point-view';
+import HeaderPresenter from '../presenter/header-presenter';
 import { render } from '../framework/render';
 import { EmptyPhrase } from '../const.js';
 
 export default class MainPresenter {
   #eventsList = new ListView();
   #eventSort = new SortListView();
+  #headerContainer = null;
   #boardContainer = null;
   #pointsModel = null;
   #offersModel = null;
@@ -15,8 +17,9 @@ export default class MainPresenter {
   #points = [];
   #offers = [];
   #destinations = [];
-  constructor({ boardContainer, pointsModel, offersModel, destinationsModel }) {
+  constructor({ boardContainer, headerContainer, pointsModel, offersModel, destinationsModel }) {
     this.#boardContainer = boardContainer;
+    this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
@@ -31,6 +34,14 @@ export default class MainPresenter {
     }
     this.#renderList();
     this.#renderSort();
+    this.#renderHeader();
+  }
+
+  #renderHeader() {
+    const headerPresenter = new HeaderPresenter({
+      headerContainer: this.#headerContainer
+    });
+    headerPresenter.init();
   }
 
   #renderList() {
