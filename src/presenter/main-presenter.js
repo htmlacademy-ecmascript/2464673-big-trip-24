@@ -4,6 +4,7 @@ import ListView from '../view/list-view';
 import EmptyPoinView from '../view/empty-point-view';
 import HeaderPresenter from '../presenter/header-presenter';
 import { render } from '../framework/render';
+import { updateItem } from '../utils-common';
 import { EmptyPhrase } from '../const.js';
 
 export default class MainPresenter {
@@ -14,6 +15,7 @@ export default class MainPresenter {
   #pointsModel = null;
   #offersModel = null;
   #destinationsModel = null;
+  #pointPresenters = new Map;
   #points = [];
   #offers = [];
   #destinations = [];
@@ -53,6 +55,17 @@ export default class MainPresenter {
     render(this.#eventSort, this.#boardContainer);
   }
 
+  #hendleDataChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
+
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => {
+      presenter.resetView();
+    });
+  };
+
   #renderPoints() {
     this.#points.forEach((point) => this.#renderPoint(point));
   }
@@ -61,8 +74,18 @@ export default class MainPresenter {
     const pointPresenter = new PoinPresenter({
       pointListContainer: this.#eventsList.element,
       destinations: this.#destinations,
-      offers: this.#offers
+      offers: this.#offers,
+      onDataChange: this.#hendleDataChange,
+      onModeChange: this.#handleModeChange,
     });
     pointPresenter.init(point);
+    this.#pointPresenters.set(point.id, pointPresenter);
+  }
+
+  #clearPointsList() {
+    this.#pointPresenters.forEach((presenter) => {
+      presenter.destroy();
+    });
+    this.#pointPresenters.clear();
   }
 }
