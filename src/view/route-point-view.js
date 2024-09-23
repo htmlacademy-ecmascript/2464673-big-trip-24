@@ -83,21 +83,21 @@ const createPointViewTemplate = (point, offersApp, destinationsApp) => {
 };
 export default class RoutePointView extends AbstractView {
   #point = null;
-  #offersApp = null;
-  #destinationsApp = null;
+  #offers = null;
+  #destinations = null;
   #onOpenEditButtonClick = null;
   constructor({point, offers, destinations, onOpenEditButtonClick}) {
     super();
     this.#point = point;
-    this.#offersApp = offers;
-    this.#destinationsApp = destinations;
+    this.#offers = offers;
+    this.#destinations = destinations;
     this.#onOpenEditButtonClick = onOpenEditButtonClick;
     this.#setEventListeners();
 
   }
 
   get template() {
-    return createPointViewTemplate(this.#point, this.#offersApp, this.#destinationsApp);
+    return createPointViewTemplate(this.#point, this.#offers, this.#destinations);
   }
 
   #setEventListeners() {

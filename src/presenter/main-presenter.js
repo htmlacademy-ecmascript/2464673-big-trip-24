@@ -1,14 +1,13 @@
-// import CreateFormView from '../view/create-form-view';
-import FormEditView from '../view/form-edit-view.js';
-import RoutePointView from '../view/route-point-view';
 import SortListView from '../view/sort-list-view';
+import PoinPresenter from './point-presenter.js';
 import ListView from '../view/list-view';
 import EmptyPoinView from '../view/empty-point-view';
-import { render, replace } from '../framework/render';
-import { EditType, EmptyPhrase } from '../const.js';
+import { render } from '../framework/render';
+import { EmptyPhrase } from '../const.js';
 
 export default class MainPresenter {
   #eventsList = new ListView();
+  #eventSort = new SortListView();
   #boardContainer = null;
   #pointsModel = null;
   #offersModel = null;
@@ -21,73 +20,38 @@ export default class MainPresenter {
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
-  }
-
-  init() {
     this.#points = [...this.#pointsModel.points];
     this.#offers = [...this.#offersModel.offers];
     this.#destinations = [...this.#destinationsModel.destinations];
-
-    render(new SortListView(), this.#boardContainer);
-    render(this.#eventsList, this.#boardContainer);
-    if(this.#points.length === 0) {
-      render(new EmptyPoinView({message: EmptyPhrase.NO_POINTS}), this.#eventsList.element);
-    }
-    for (let i = 0; i < this.#points.length; i++) {
-      this.#renderPoint(this.#points[i], this.#offers, this.#destinations);
-    }
   }
 
-  #renderPoint(point, offers, destinations, editType = EditType.EDIT) {
-
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceEditPointToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    const onOpenEditButtonClick = () => {
-      replacePointToEditPoint();
-      document.addEventListener('keydown', escKeyDownHandler);
-    };
-
-    const onCloseEditButtonClick = () => {
-      replaceEditPointToPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    };
-
-    const onSubmitButtonClick = () => {
-      replaceEditPointToPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    };
-
-    const pointComponent = new RoutePointView({
-      point,
-      offers,
-      destinations,
-      editType,
-      onOpenEditButtonClick
-    });
-
-    const pointEditComponent = new FormEditView({
-      point,
-      offers,
-      destinations,
-      onCloseEditButtonClick,
-      onSubmitButtonClick
-    });
-
-    function replacePointToEditPoint() {
-      replace(pointEditComponent, pointComponent);
+  init() {
+    if (this.#points.length === 0) {
+      render(new EmptyPoinView({ message: EmptyPhrase.NO_POINTS }), this.#eventsList.element);
     }
+    this.#renderList();
+    this.#renderSort();
+  }
 
-    function replaceEditPointToPoint() {
-      replace(pointComponent, pointEditComponent);
-    }
+  #renderList() {
+    render(this.#eventsList, this.#boardContainer);
+    this.#renderPoints();
+  }
 
-    render(pointComponent, this.#eventsList.element);
+  #renderSort() {
+    render(this.#eventSort, this.#boardContainer);
+  }
 
+  #renderPoints() {
+    this.#points.forEach((point) => this.#renderPoint(point));
+  }
+
+  #renderPoint(point) {
+    const pointPresenter = new PoinPresenter({
+      pointListContainer: this.#eventsList.element,
+      destinations: this.#destinations,
+      offers: this.#offers
+    });
+    pointPresenter.init(point);
   }
 }
