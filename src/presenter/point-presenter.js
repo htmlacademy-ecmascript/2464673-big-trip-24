@@ -1,7 +1,6 @@
 import RoutePointView from '../view/route-point-view';
 import FormEditView from '../view/form-edit-view';
-import { EditType } from '../const';
-
+import { EditType, Mode } from '../const';
 import { render, replace, remove } from '../framework/render';
 
 export default class PoinPresenter {
@@ -9,6 +8,7 @@ export default class PoinPresenter {
   #destinations = null;
   #offers = null;
   #point = null;
+  #mode = Mode.DEFAULT;
   #pointComponent = null;
   #pointEditComponent = null;
   #editType = EditType.EDIT;
@@ -51,16 +51,22 @@ export default class PoinPresenter {
       return;
     }
 
-    if (this.#pointListContainer.contains(prevPointComponent.element)) {
+    if (this.#mode === Mode.DEFAULT) {
       replace(this.#pointComponent, prevPointComponent);
     }
 
-    if (this.#pointListContainer.contains(prevFormEditComponent.element)) {
+    if (this.#mode === Mode.EDITING) {
       replace(this.#pointEditComponent, prevFormEditComponent);
     }
 
     remove(prevPointComponent);
     remove(prevFormEditComponent);
+  }
+
+  resetView() {
+    if(this.#mode !== Mode.DEFAULT) {
+      this.#replaceEditPointToPoint();
+    }
   }
 
   destroy() {
@@ -70,11 +76,15 @@ export default class PoinPresenter {
 
   #replacePointToEditPoint() {
     replace(this.#pointEditComponent, this.#pointComponent);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#handleModeChange();
+    this.#mode = Mode.EDITING;
   }
 
   #replaceEditPointToPoint() {
     replace(this.#pointComponent, this.#pointEditComponent);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#mode = Mode.DEFAULT;
   }
 
   #escKeyDownHandler = (evt) => {
@@ -87,12 +97,10 @@ export default class PoinPresenter {
 
   #onOpenEditButtonClick = () => {
     this.#replacePointToEditPoint();
-    document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #onCloseEditButtonClick = () => {
     this.#replaceEditPointToPoint();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #onSubmitButtonClick = (point) => {

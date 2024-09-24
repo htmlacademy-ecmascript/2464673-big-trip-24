@@ -43,7 +43,34 @@ const mockPoints = [
   },
   {
     id: 5,
+    basePrice: 98,
+    dateFrom: '2024-10-30T12:44:09.899Z',
+    dateTo: '2024-11-01T12:11:09.899Z',
+    destination: 'destination-4',
+    isFavorite: false,
+    offers: [
+      'drive-1',
+      'drive-2'
+    ],
+    type: 'drive'
+  },
+  {
+    id: 6,
     basePrice: 3295,
+    dateFrom: '2024-11-03T06:31:09.899Z',
+    dateTo: '2024-11-04T03:00:09.899Z',
+    destination: 'destination-4',
+    isFavorite: false,
+    offers: [
+      'train-1',
+      'train-2',
+      'train-3'
+    ],
+    type: 'train'
+  },
+  {
+    id: 7,
+    basePrice: 54,
     dateFrom: '2024-11-03T06:31:09.899Z',
     dateTo: '2024-11-04T03:00:09.899Z',
     destination: 'destination-4',

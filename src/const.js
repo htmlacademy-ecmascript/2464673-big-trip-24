@@ -72,8 +72,13 @@ const BLANK_POINT = {
   type: EventType.TRAIN
 };
 
-const POINT_COUNT = 6;
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
 
-export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS, MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType, DateFormat, EditType, FilterType, EmptyPhrase, Attribute};
+const POINT_COUNT = 4;
+
+export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS, MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType, DateFormat, EditType, FilterType, EmptyPhrase, Attribute, Mode};
 
 
