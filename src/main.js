@@ -1,4 +1,4 @@
-import { render, RenderPosition } from './framework/render.js';
+import { render } from './framework/render.js';
 import { generateFilter } from './mocks/filter.js';
 import FilterView from './view/filter-view.js';
 import MainPresenter from './presenter/main-presenter.js';
