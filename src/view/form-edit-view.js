@@ -1,5 +1,5 @@
 import { EditType, EventType } from '../const';
-import { capitalizedString } from '../utils';
+import { capitalizedString } from '../utils-common';
 import { BLANK_POINT } from '../const';
 import AbstractView from '../framework/view/abstract-view';
 
@@ -52,14 +52,14 @@ function createEditPointDestinationTemplate(destinationPoint, editType) {
     return '';
   }
   return (
-    editType === EditType.ADD
-      ? destinationPoint.description
-      : `${destinationPoint.description}
+    editType === EditType.EDIT
+      ? `${destinationPoint.description}
         <div class="event__photos-container">
           <div class="event__photos-tape">
           ${destinationPoint.pictures.map(({src, description}) => `<img class="event__photo" src="${src}" alt="${description}"></img>`).join('')}
           </div>
         </div>`
+      : destinationPoint.description
   );
 }
 
@@ -158,10 +158,10 @@ function createEditFormTemplate(point, offersApp, destinationsApp, editType) {
   );
 }
 
-export default class EditFormView extends AbstractView {
+export default class FormEditView extends AbstractView {
   #point;
-  #offersApp;
-  #destinationsApp;
+  #offers;
+  #destinations;
   #editType;
   #onCloseEditButtonClick;
   #onSubmitButtonClick;
@@ -169,8 +169,8 @@ export default class EditFormView extends AbstractView {
   constructor({point: point = BLANK_POINT, offers, destinations, editType, onCloseEditButtonClick, onSubmitButtonClick}) {
     super();
     this.#point = point;
-    this.#offersApp = offers;
-    this.#destinationsApp = destinations;
+    this.#offers = offers;
+    this.#destinations = destinations;
     this.#editType = editType;
     this.#onCloseEditButtonClick = onCloseEditButtonClick;
     this.#onSubmitButtonClick = onSubmitButtonClick;
@@ -178,7 +178,7 @@ export default class EditFormView extends AbstractView {
   }
 
   get template() {
-    return createEditFormTemplate(this.#point, this.#offersApp, this.#destinationsApp, this.#editType);
+    return createEditFormTemplate(this.#point, this.#offers, this.#destinations, this.#editType);
   }
 
   #setEventListeners() {
@@ -194,7 +194,7 @@ export default class EditFormView extends AbstractView {
 
   #submitButtonClickHandler = (evt) => {
     evt.preventDefault();
-    this.#onSubmitButtonClick();
+    this.#onSubmitButtonClick(this.#point);
   };
 
 }

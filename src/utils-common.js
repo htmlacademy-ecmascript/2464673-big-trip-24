@@ -24,4 +24,6 @@ const calculateDuration = (dateFrom, dateTo) => {
 };
 const capitalizedString = (string) => string.replace(string[0], string[0].toUpperCase());
 
-export { getRandomArrayElement, calculateDuration, humanizeDate, capitalizedString };
+const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
+
+export { getRandomArrayElement, updateItem, calculateDuration, humanizeDate, capitalizedString };
