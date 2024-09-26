@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid';
 
 const mockPoints = [
   {
-    id: 2,
     basePrice: 1294,
     dateFrom: '2024-10-25T18:41:09.899Z',
     dateTo: '2024-10-27T09:05:09.899Z',
@@ -16,7 +15,6 @@ const mockPoints = [
     type: 'flight'
   },
   {
-    id: 3,
     basePrice: 1619,
     dateFrom: '2024-10-28T15:57:09.899Z',
     dateTo: '2024-10-29T03:09:09.899Z',
@@ -29,7 +27,6 @@ const mockPoints = [
     type: 'taxi'
   },
   {
-    id: 4,
     basePrice: 6096,
     dateFrom: '2024-10-30T12:44:09.899Z',
     dateTo: '2024-11-01T12:11:09.899Z',
@@ -42,7 +39,6 @@ const mockPoints = [
     type: 'drive'
   },
   {
-    id: 5,
     basePrice: 98,
     dateFrom: '2024-10-30T12:44:09.899Z',
     dateTo: '2024-11-01T12:11:09.899Z',
@@ -55,7 +51,6 @@ const mockPoints = [
     type: 'drive'
   },
   {
-    id: 6,
     basePrice: 3295,
     dateFrom: '2024-11-03T06:31:09.899Z',
     dateTo: '2024-11-04T03:00:09.899Z',
@@ -69,7 +64,6 @@ const mockPoints = [
     type: 'train'
   },
   {
-    id: 7,
     basePrice: 54,
     dateFrom: '2024-11-03T06:31:09.899Z',
     dateTo: '2024-11-04T03:00:09.899Z',
