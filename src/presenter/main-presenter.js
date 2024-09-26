@@ -1,16 +1,14 @@
 import SortListView from '../view/sort-list-view';
-import PoinPresenter from './point-presenter.js';
-import { RenderPosition } from '../framework/render';
+import PoinPresenter from './point-presenter';
 import ListView from '../view/list-view';
 import EmptyPoinView from '../view/empty-point-view';
 import HeaderPresenter from '../presenter/header-presenter';
-import { render } from '../framework/render';
-import { updateItem } from '../utils-common';
-import { EmptyPhrase } from '../const.js';
+import { render, RenderPosition } from '../framework/render';
+import { updateItem, sorting } from '../utils-common';
+import { EmptyPhrase, enabledSortType, SortType } from '../const';
 
 export default class MainPresenter {
   #eventsList = new ListView();
-  #eventSort = new SortListView();
   #headerContainer = null;
   #boardContainer = null;
   #pointsModel = null;
@@ -20,6 +18,15 @@ export default class MainPresenter {
   #points = [];
   #offers = [];
   #destinations = [];
+  #sortComponent = null;
+  #currentSortType = SortType.DAY;
+  #sortTypes = Object.values(SortType).map((type) => (
+    {
+      type,
+      isChecked: type === this.#currentSortType,
+      isDisabled: !enabledSortType[type]
+    }));
+
   constructor({ boardContainer, headerContainer, pointsModel, offersModel, destinationsModel }) {
     this.#boardContainer = boardContainer;
     this.#headerContainer = headerContainer;
@@ -49,11 +56,27 @@ export default class MainPresenter {
 
   #renderList() {
     render(this.#eventsList, this.#boardContainer);
-    this.#renderPoints();
+    this.#handleSortTypeChange(this.#currentSortType);
   }
 
+  #sortPoints = (sortType) => {
+    this.#currentSortType = sortType;
+    this.#points = sorting[this.#currentSortType](this.#points);
+  };
+
+  #handleSortTypeChange = (sortType) => {
+    this.#sortPoints(sortType);
+    this.#clearPointsList();
+    this.#renderPoints();
+  };
+
   #renderSort() {
-    render(this.#eventSort, this.#boardContainer, RenderPosition.AFTERBEGIN);
+    this.#sortComponent = new SortListView({
+      sortTypes: this.#sortTypes,
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+
+    render(this.#sortComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
   }
 
   #hendleDataChange = (updatedPoint) => {

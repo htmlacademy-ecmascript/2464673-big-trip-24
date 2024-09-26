@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 import { MSEC_IN_HOUR, MSEC_IN_DAY, DURATION_FORMATS } from './const.js';
+import { SortType } from './const';
 
 const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
 
@@ -26,4 +27,33 @@ const capitalizedString = (string) => string.replace(string[0], string[0].toUppe
 
 const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
 
-export { getRandomArrayElement, updateItem, calculateDuration, humanizeDate, capitalizedString };
+function getPointsByDate(pointA, pointB) {
+  return dayjs(pointB.dateFrom).diff(dayjs(pointA.dateFrom));
+}
+
+function getPointsByPrice(pointA, pointB) {
+  return pointB.basePrice - pointA.basePrice;
+}
+
+function getPointsByTime(pointA, pointB) {
+  const pointADuration = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
+  const pointBDuration = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
+  return pointBDuration - pointADuration;
+}
+
+const sorting = {
+  [SortType.DAY]: (points) => points.toSorted(getPointsByDate),
+  [SortType.EVENT]: () => {
+    throw new Error(`Sort by ${SortType.EVENT} is disabled`);
+  },
+  [SortType.TIME]: (points) => points.toSorted(getPointsByTime),
+  [SortType.PRICE]: (points) => points.toSorted(getPointsByPrice),
+  [SortType.OFFER]: () => {
+    throw new Error(`Sort by ${SortType.OFFER} is disabled`);
+  },
+};
+
+
+export { getRandomArrayElement, updateItem,
+  calculateDuration, humanizeDate, capitalizedString,
+  sorting };
