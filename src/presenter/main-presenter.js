@@ -1,5 +1,6 @@
 import SortListView from '../view/sort-list-view';
 import PoinPresenter from './point-presenter.js';
+import { RenderPosition } from '../framework/render';
 import ListView from '../view/list-view';
 import EmptyPoinView from '../view/empty-point-view';
 import HeaderPresenter from '../presenter/header-presenter';
@@ -52,7 +53,7 @@ export default class MainPresenter {
   }
 
   #renderSort() {
-    render(this.#eventSort, this.#boardContainer);
+    render(this.#eventSort, this.#boardContainer, RenderPosition.AFTERBEGIN);
   }
 
   #hendleDataChange = (updatedPoint) => {
