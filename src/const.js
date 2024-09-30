@@ -48,6 +48,14 @@ const SortType = {
   OFFER: 'offer'
 };
 
+const enabledSortType = {
+  [SortType.DAY]: true,
+  [SortType.EVENT]: false,
+  [SortType.TIME]: true,
+  [SortType.PRICE]: true,
+  [SortType.OFFER]: false,
+};
+
 const DateFormat = {
   DAY: 'MMM D',
   TIME: 'hh:mm',
@@ -79,6 +87,9 @@ const Mode = {
 
 const POINT_COUNT = 4;
 
-export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS, MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType, DateFormat, EditType, FilterType, EmptyPhrase, Attribute, Mode};
+export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS,
+  MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType,
+  DateFormat, EditType, FilterType, EmptyPhrase,
+  Attribute, Mode, enabledSortType};
 
 
