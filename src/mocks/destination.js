@@ -37,32 +37,7 @@ const mockDestinations = [
     id: 'destination-3',
     description: '',
     name: 'Chamonix',
-    pictures: []
-  },
-  {
-    id: 'destination-4',
-    description: 'Rome - with crowded streets',
-    name: 'Rome',
     pictures: [
-      {
-        src: 'https://24.objects.htmlacademy.pro/static/destinations/13.jpg',
-        description: 'Rome middle-eastern paradise'
-      },
-      {
-        src: 'https://24.objects.htmlacademy.pro/static/destinations/14.jpg',
-        description: 'Rome famous for its crowded street markets with the best street food in Asia'
-      },
-      {
-        src: 'https://24.objects.htmlacademy.pro/static/destinations/10.jpg',
-        description: 'Rome a perfect place to stay with a family'
-      }
-    ]
-  },
-  {
-    'id': 'destination-5',
-    'description': 'Moscow - with an embankment of a mighty river as a centre of attraction',
-    'name': 'Moscow',
-    'pictures': [
       {
         'src': 'https://24.objects.htmlacademy.pro/static/destinations/5.jpg',
         'description': 'Moscow with an embankment of a mighty river as a centre of attraction'
@@ -78,8 +53,19 @@ const mockDestinations = [
       {
         'src': 'https://24.objects.htmlacademy.pro/static/destinations/9.jpg',
         'description': 'Moscow with crowded streets'
-      }
-    ]
+      }]
+  },
+  {
+    id: 'destination-4',
+    description: '',
+    name: 'Rome',
+    pictures: []
+  },
+  {
+    id: 'destination-5',
+    description: 'Moscow - with an embankment of a mighty river as a centre of attraction',
+    name: 'Moscow',
+    pictures: []
   },
 ];
 

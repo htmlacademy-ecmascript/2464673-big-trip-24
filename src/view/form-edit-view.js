@@ -46,37 +46,50 @@ function createEditPointOfferTemplate(offersPoint, offers) {
     );
   }).join('');
 }
-//выделили отображение destination в зависимости от типа формы (новая или редактирование) !
 
-
-function createEditPoinntDestinationTitleType(destinationPoint, editType) {
-  if(!editType === EditType.EDIT) {
-    return destinationPoint.description;
+function createPhotoTemplate(destinationPoint) {
+  if (destinationPoint.pictures.length === 0) {
+    return '';
   }
-  return `${destinationPoint.description}
-    <div class="event__photos-container">
+  return ` <div class="event__photos-container">
       <div class="event__photos-tape">
       ${destinationPoint.pictures.map(({ src, description }) => `<img class="event__photo" src="${src}" alt="${description}"></img>`).join('')}
       </div>
     </div>`;
 }
 
-
-function createEditPointDestinationTemplate(destinationPoint, editType) {
-  if (!destinationPoint) {
+function createDescriptionTemplate(destinationPoint) {
+  if (!destinationPoint.description) {
     return '';
   }
-  return createEditPoinntDestinationTitleType(destinationPoint, editType);
+  return `<p class="event__destination-description">${destinationPoint.description}</p>`;
 }
 
-function createEditPointDestinationContainerTemplate(destinationTemplate) {
-  if (!destinationTemplate) {
+function addPointDestinationHeader(destination) {
+  if (!destination) {
+    return '';
+  }
+  return `<h3 class="event__section-title  event__section-title--destination">Destination</h3>
+  ${destination}`;
+}
+
+function createEditPointDestinationTemplate(destinationPoint, editType) {
+  let destination = '';
+  if (editType === EditType.EDIT) {
+    destination = `${createDescriptionTemplate(destinationPoint)}${createPhotoTemplate(destinationPoint)}`;
+  } else if (editType === EditType.ADD) {
+    destination = createDescriptionTemplate(destinationPoint);
+  }
+  return addPointDestinationHeader(destination);
+}
+
+function createEditPointDestinationContainerTemplate(destinationPoint, editType) {
+  if (!destinationPoint) {
     return '';
   }
   return (
     `<section class="event__section  event__section--destination">
-      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${destinationTemplate}</p>
+    ${createEditPointDestinationTemplate(destinationPoint, editType)}
     </section>`
   );
 }
@@ -93,7 +106,7 @@ function createEditPointButtonNegativeTemplate(editType) {
 }
 
 function createCityList(destinations) {
-  if(!destinations) {
+  if (!destinations) {
     return '';
   }
   return destinations.map((destination) => (
@@ -108,8 +121,7 @@ function createEditFormTemplate(point, offersApp, destinationsApp, editType) {
   const offersTemplate = createEditPointOfferTemplate(offersPoint, offers);
   const offersContainerTemplate = createEditPointOfferContainerTemplate(offersTemplate);
   const destinationPoint = destinationsApp.find((item) => item.id === destination);
-  const destinationTemplate = createEditPointDestinationTemplate(destinationPoint, editType);
-  const destinationContainerTemplate = createEditPointDestinationContainerTemplate(destinationTemplate);
+  const destinationContainerTemplate = createEditPointDestinationContainerTemplate(destinationPoint, editType);
   const titleLabelTemplate = capitalizedString(type);
   const titleInputTemplate = destinationPoint ? destinationPoint.name : '';
   const buttonNegativeTemplate = createEditPointButtonNegativeTemplate(editType);
@@ -241,10 +253,12 @@ export default class FormEditView extends AbstractStatefulView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     const targetDestination = evt.target.value;
-    const newDestination = this.#destinations.find((item) => item.name === targetDestination);
-    this.updateElement({
-      destination: newDestination.id
-    });
+    if (targetDestination) {
+      const newDestination = this.#destinations.find((item) => item.name === targetDestination);
+      this.updateElement({
+        destination: newDestination.id
+      });
+    }
   };
 
   #priceChangeHandler = (evt) => {
