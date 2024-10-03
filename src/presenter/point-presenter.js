@@ -5,8 +5,10 @@ import { render, replace, remove } from '../framework/render';
 
 export default class PoinPresenter {
   #pointListContainer = null;
-  #destinations = null;
-  #offers = null;
+  #pointDestination = null;
+  #typeOffers = [];
+  #destinations = [];
+  #offers = [];
   #point = null;
   #mode = Mode.DEFAULT;
   #pointComponent = null;
@@ -15,8 +17,10 @@ export default class PoinPresenter {
   #hendleDataChange = null;
   #handleModeChange = null;
 
-  constructor({ onDataChange, onModeChange, pointListContainer, destinations, offers }) {
+  constructor({ pointDestination, typeOffers, onDataChange, onModeChange, pointListContainer, destinations, offers }) {
     this.#pointListContainer = pointListContainer;
+    this.#pointDestination = pointDestination;
+    this.#typeOffers = typeOffers;
     this.#destinations = destinations;
     this.#offers = offers;
     this.#hendleDataChange = onDataChange;
@@ -39,6 +43,8 @@ export default class PoinPresenter {
 
     this.#pointEditComponent = new FormEditView({
       point: this.#point,
+      typeOffers: this.#typeOffers,
+      pointDestination: this.#pointDestination,
       offers: this.#offers,
       destinations: this.#destinations,
       editType: this.#editType,

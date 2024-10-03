@@ -35,7 +35,7 @@ const mockDestinations = [
   },
   {
     id: 'destination-3',
-    description: 'Chamonix - in a middle of Europe',
+    description: '',
     name: 'Chamonix',
     pictures: []
   },
@@ -57,7 +57,30 @@ const mockDestinations = [
         description: 'Rome a perfect place to stay with a family'
       }
     ]
-  }
+  },
+  {
+    'id': 'destination-5',
+    'description': 'Moscow - with an embankment of a mighty river as a centre of attraction',
+    'name': 'Moscow',
+    'pictures': [
+      {
+        'src': 'https://24.objects.htmlacademy.pro/static/destinations/5.jpg',
+        'description': 'Moscow with an embankment of a mighty river as a centre of attraction'
+      },
+      {
+        'src': 'https://24.objects.htmlacademy.pro/static/destinations/3.jpg',
+        'description': 'Moscow for those who value comfort and coziness'
+      },
+      {
+        'src': 'https://24.objects.htmlacademy.pro/static/destinations/6.jpg',
+        'description': 'Moscow a true asian pearl'
+      },
+      {
+        'src': 'https://24.objects.htmlacademy.pro/static/destinations/9.jpg',
+        'description': 'Moscow with crowded streets'
+      }
+    ]
+  },
 ];
 
 export { mockDestinations };

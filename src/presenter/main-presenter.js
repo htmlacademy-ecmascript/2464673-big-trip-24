@@ -97,6 +97,8 @@ export default class MainPresenter {
   #renderPoint(point) {
     const pointPresenter = new PoinPresenter({
       pointListContainer: this.#eventsList.element,
+      pointDestination: this.#destinationsModel.getDestinationById(point.destination),
+      typeOffers: this.#offersModel.getOffersByType(point.type),
       destinations: this.#destinations,
       offers: this.#offers,
       onDataChange: this.#hendleDataChange,
