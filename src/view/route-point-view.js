@@ -83,8 +83,8 @@ const createPointViewTemplate = (point, offersApp, destinationsApp) => {
 };
 export default class RoutePointView extends AbstractView {
   #point = null;
-  #offers = null;
-  #destinations = null;
+  #offers = [];
+  #destinations = [];
   #onOpenEditButtonClick = null;
   #onFavoriteClick = null;
 
@@ -93,10 +93,11 @@ export default class RoutePointView extends AbstractView {
     this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
+    this.#offers = offers;
+    this.#destinations = destinations;
     this.#onOpenEditButtonClick = onOpenEditButtonClick;
     this.#setEventListeners();
     this.#onFavoriteClick = onFavoriteClick;
-
   }
 
   get template() {

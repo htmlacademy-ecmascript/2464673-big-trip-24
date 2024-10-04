@@ -35,29 +35,38 @@ const mockDestinations = [
   },
   {
     id: 'destination-3',
-    description: 'Chamonix - in a middle of Europe',
+    description: '',
     name: 'Chamonix',
-    pictures: []
+    pictures: [
+      {
+        'src': 'https://24.objects.htmlacademy.pro/static/destinations/5.jpg',
+        'description': 'Moscow with an embankment of a mighty river as a centre of attraction'
+      },
+      {
+        'src': 'https://24.objects.htmlacademy.pro/static/destinations/3.jpg',
+        'description': 'Moscow for those who value comfort and coziness'
+      },
+      {
+        'src': 'https://24.objects.htmlacademy.pro/static/destinations/6.jpg',
+        'description': 'Moscow a true asian pearl'
+      },
+      {
+        'src': 'https://24.objects.htmlacademy.pro/static/destinations/9.jpg',
+        'description': 'Moscow with crowded streets'
+      }]
   },
   {
     id: 'destination-4',
-    description: 'Rome - with crowded streets',
+    description: '',
     name: 'Rome',
-    pictures: [
-      {
-        src: 'https://24.objects.htmlacademy.pro/static/destinations/13.jpg',
-        description: 'Rome middle-eastern paradise'
-      },
-      {
-        src: 'https://24.objects.htmlacademy.pro/static/destinations/14.jpg',
-        description: 'Rome famous for its crowded street markets with the best street food in Asia'
-      },
-      {
-        src: 'https://24.objects.htmlacademy.pro/static/destinations/10.jpg',
-        description: 'Rome a perfect place to stay with a family'
-      }
-    ]
-  }
+    pictures: []
+  },
+  {
+    id: 'destination-5',
+    description: 'Moscow - with an embankment of a mighty river as a centre of attraction',
+    name: 'Moscow',
+    pictures: []
+  },
 ];
 
 export { mockDestinations };

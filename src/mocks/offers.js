@@ -68,6 +68,70 @@ const mockOffers = [
         price: 95
       }
     ]
+  },
+  {
+    type: 'bus',
+    offers: [
+      {
+        id: 'bus-1',
+        title: 'With automatic transmission',
+        price: 144
+      },
+      {
+        id: 'bus-2',
+        title: 'With air conditioning',
+        price: 95
+      }
+    ]
+  },
+  {
+    type: 'ship',
+    offers: [
+      {
+        id: 'ship-1',
+        title: 'With automatic transmission',
+        price: 144
+      },
+      {
+        id: 'ship-2',
+        title: 'With air conditioning',
+        price: 95
+      }
+    ]
+  },
+  {
+    type: 'check-in',
+    offers: [
+      {
+        id: 'check-in-1',
+        title: 'With automatic transmission',
+        price: 90
+      },
+      {
+        id: 'check-in-2',
+        title: 'With air conditioning',
+        price: 95
+      }
+    ]
+  },
+  {
+    type: 'sightseeing',
+    offers: [
+      {
+        id: 'sightseeing-1',
+        title: 'With automatic transmission',
+        price: 54
+      },
+      {
+        id: 'sightseeing-2',
+        title: 'With air conditioning',
+        price: 378
+      }
+    ]
+  },
+  {
+    type: 'restaurant',
+    offers: []
   }
 ];
 

@@ -1,7 +1,7 @@
 import { EditType, EventType } from '../const';
 import { capitalizedString } from '../utils-common';
 import { BLANK_POINT } from '../const';
-import AbstractView from '../framework/view/abstract-view';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 
 function createEditPointEventTypeTemplate(pointType) {
   return (
@@ -28,11 +28,11 @@ function createEditPointOfferContainerTemplate(offersTemplate) {
   );
 }
 
-function createEditPointOfferTemplate (offersPoint, offers) {
+function createEditPointOfferTemplate(offersPoint, offers) {
   if (!offersPoint.offers) {
     return '';
   }
-  return offersPoint.offers.map(({title, price, id}) => {
+  return offersPoint.offers.map(({ title, price, id }) => {
     const offerClassName = title.split(' ').findLast((word) => word.length > 3).toLowerCase();
     return (
       `<div class="event__offer-selector">
@@ -47,30 +47,49 @@ function createEditPointOfferTemplate (offersPoint, offers) {
   }).join('');
 }
 
+function createPhotoTemplate(destinationPoint) {
+  if (destinationPoint.pictures.length === 0) {
+    return '';
+  }
+  return ` <div class="event__photos-container">
+      <div class="event__photos-tape">
+      ${destinationPoint.pictures.map(({ src, description }) => `<img class="event__photo" src="${src}" alt="${description}"></img>`).join('')}
+      </div>
+    </div>`;
+}
+
+function createDescriptionTemplate(destinationPoint) {
+  if (!destinationPoint.description) {
+    return '';
+  }
+  return `<p class="event__destination-description">${destinationPoint.description}</p>`;
+}
+
+function addPointDestinationHeader(destination) {
+  if (!destination) {
+    return '';
+  }
+  return `<h3 class="event__section-title  event__section-title--destination">Destination</h3>
+  ${destination}`;
+}
+
 function createEditPointDestinationTemplate(destinationPoint, editType) {
+  let destination = '';
+  if (editType === EditType.EDIT) {
+    destination = `${createDescriptionTemplate(destinationPoint)}${createPhotoTemplate(destinationPoint)}`;
+  } else if (editType === EditType.ADD) {
+    destination = createDescriptionTemplate(destinationPoint);
+  }
+  return addPointDestinationHeader(destination);
+}
+
+function createEditPointDestinationContainerTemplate(destinationPoint, editType) {
   if (!destinationPoint) {
     return '';
   }
   return (
-    editType === EditType.EDIT
-      ? `${destinationPoint.description}
-        <div class="event__photos-container">
-          <div class="event__photos-tape">
-          ${destinationPoint.pictures.map(({src, description}) => `<img class="event__photo" src="${src}" alt="${description}"></img>`).join('')}
-          </div>
-        </div>`
-      : destinationPoint.description
-  );
-}
-
-function createEditPointDestinationContainerTemplate(destinationTemplate) {
-  if (!destinationTemplate) {
-    return '';
-  }
-  return (
     `<section class="event__section  event__section--destination">
-      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${destinationTemplate}</p>
+    ${createEditPointDestinationTemplate(destinationPoint, editType)}
     </section>`
   );
 }
@@ -86,15 +105,23 @@ function createEditPointButtonNegativeTemplate(editType) {
   );
 }
 
+function createCityList(destinations) {
+  if (!destinations) {
+    return '';
+  }
+  return destinations.map((destination) => (
+    `<option value="${destination.name}"></option>`
+  )).join('');
+}
+
 function createEditFormTemplate(point, offersApp, destinationsApp, editType) {
-  const {basePrice, offers, destination, type} = point;
+  const { basePrice, offers, destination, type } = point;
   const eventTypesTemplate = createEditPointEventTypeTemplate(type);
   const offersPoint = offersApp.find((offer) => offer.type === type);
   const offersTemplate = createEditPointOfferTemplate(offersPoint, offers);
   const offersContainerTemplate = createEditPointOfferContainerTemplate(offersTemplate);
   const destinationPoint = destinationsApp.find((item) => item.id === destination);
-  const destinationTemplate = createEditPointDestinationTemplate(destinationPoint, editType);
-  const destinationContainerTemplate = createEditPointDestinationContainerTemplate(destinationTemplate);
+  const destinationContainerTemplate = createEditPointDestinationContainerTemplate(destinationPoint, editType);
   const titleLabelTemplate = capitalizedString(type);
   const titleInputTemplate = destinationPoint ? destinationPoint.name : '';
   const buttonNegativeTemplate = createEditPointButtonNegativeTemplate(editType);
@@ -123,9 +150,7 @@ function createEditFormTemplate(point, offersApp, destinationsApp, editType) {
             </label>
             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${titleInputTemplate}" list="destination-list-1">
             <datalist id="destination-list-1">
-              <option value="Amsterdam"></option>
-              <option value="Geneva"></option>
-              <option value="Chamonix"></option>
+              ${createCityList(destinationsApp)}
             </datalist>
           </div>
 
@@ -157,18 +182,17 @@ function createEditFormTemplate(point, offersApp, destinationsApp, editType) {
     </li>`
   );
 }
-
-export default class FormEditView extends AbstractView {
+export default class FormEditView extends AbstractStatefulView {
   #point;
   #offers;
   #destinations;
   #editType;
   #onCloseEditButtonClick;
   #onSubmitButtonClick;
-
-  constructor({point: point = BLANK_POINT, offers, destinations, editType, onCloseEditButtonClick, onSubmitButtonClick}) {
+  constructor({ point: point = BLANK_POINT, pointDestination, typeOffers, offers, destinations, editType, onCloseEditButtonClick, onSubmitButtonClick }) {
     super();
     this.#point = point;
+    this._setState(FormEditView.parsPointToState(point, pointDestination.id, typeOffers));
     this.#offers = offers;
     this.#destinations = destinations;
     this.#editType = editType;
@@ -178,23 +202,84 @@ export default class FormEditView extends AbstractView {
   }
 
   get template() {
-    return createEditFormTemplate(this.#point, this.#offers, this.#destinations, this.#editType);
+    return createEditFormTemplate(this._state, this.#offers, this.#destinations, this.#editType);
+  }
+
+  reset() {
+    this.updateElement({
+      ...this.#point,
+      typeOffers: this.#offers.find((offer) => offer.type === this.point.type)
+    });
+  }
+
+  _restoreHandlers() {
+    this.#setEventListeners();
   }
 
   #setEventListeners() {
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeOpenEditButtonClickHandler);
+    if (this.#editType === EditType.EDIT) {
+      this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeOpenEditButtonClickHandler);
+    }
 
-    this.element.querySelector('.event__save-btn').addEventListener('submit', this.#submitButtonClickHandler);
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#submitButtonClickHandler);
+
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#typeListChangeHandler);
+
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
   }
 
   #closeOpenEditButtonClickHandler = (evt) => {
     evt.preventDefault();
-    this.#onCloseEditButtonClick();
+    this.#onCloseEditButtonClick(FormEditView.parseStateToPoint(this.#point));
   };
 
   #submitButtonClickHandler = (evt) => {
     evt.preventDefault();
-    this.#onSubmitButtonClick(this.#point);
+    this.#onSubmitButtonClick(FormEditView.parseStateToPoint(this.#point));
   };
 
+  #typeListChangeHandler = (evt) => {
+    evt.preventDefault();
+    const targetType = evt.target.value;
+    const typeOffers = this.#offers.find((item) => item.type === targetType);
+    this.updateElement({
+      type: targetType,
+      typeOffers: typeOffers
+    });
+  };
+
+  #destinationChangeHandler = (evt) => {
+    evt.preventDefault();
+    const targetDestination = evt.target.value;
+    if (targetDestination) {
+      const newDestination = this.#destinations.find((item) => item.name === targetDestination);
+      this.updateElement({
+        destination: newDestination.id
+      });
+    }
+  };
+
+  #priceChangeHandler = (evt) => {
+    evt.preventDefault();
+    const newPrice = evt.target.value;
+    this._setState({
+      basePrice: newPrice
+    });
+  };
+
+  static parsPointToState(point, pointDestination, typeOffers) {
+    return {
+      ...point,
+      destination: pointDestination,
+      typeOffers
+    };
+  }
+
+  static parseStateToPoint(state) {
+    const point = { ...state };
+
+    return point;
+  }
 }
