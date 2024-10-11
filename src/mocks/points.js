@@ -4,8 +4,8 @@ import { nanoid } from 'nanoid';
 const mockPoints = [
   {
     basePrice: 1294,
-    dateFrom: '2024-10-25T18:41:09.899Z',
-    dateTo: '2024-10-27T09:05:09.899Z',
+    dateFrom: '2024-09-14T18:10:00.845Z',
+    dateTo: '2024-09-16T01:31:01.375Z',
     destination: 'destination-2',
     isFavorite: true,
     offers: [
@@ -16,8 +16,8 @@ const mockPoints = [
   },
   {
     basePrice: 1619,
-    dateFrom: '2024-10-28T15:57:09.899Z',
-    dateTo: '2024-10-29T03:09:09.899Z',
+    dateFrom: '2024-08-02T20:15:56.845Z',
+    dateTo: '2024-08-02T23:35:13.375Z',
     destination: 'destination-3',
     isFavorite: false,
     offers: [
@@ -28,8 +28,8 @@ const mockPoints = [
   },
   {
     basePrice: 6096,
-    dateFrom: '2024-10-30T12:44:09.899Z',
-    dateTo: '2024-11-01T12:11:09.899Z',
+    dateFrom: '2024-11-04T10:00:56.845Z',
+    dateTo: '2024-11-10T12:30:13.375Z',
     destination: 'destination-4',
     isFavorite: false,
     offers: [

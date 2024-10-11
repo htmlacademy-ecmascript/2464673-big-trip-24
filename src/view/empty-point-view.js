@@ -1,18 +1,20 @@
 import AbstractView from '../framework/view/abstract-view';
+import { EmptyPhrase } from '../const';
 
-function createEmptyListPointTemplate(message) {
-  return `<p class="trip-events__msg">${message}</p>`;
+function createEmptyListPointTemplate(filterType) {
+  return `<p class="trip-events__msg">${EmptyPhrase[filterType.toUpperCase()]}</p>`;
 }
 
 export default class EmptyPointView extends AbstractView {
-  #message = null;
+  #filterType = null;
 
-  constructor({ message }) {
+  constructor({ filterType }) {
+
     super();
-    this.#message = message;
+    this.#filterType = filterType;
   }
 
   get template() {
-    return createEmptyListPointTemplate(this.#message);
+    return createEmptyListPointTemplate(this.#filterType);
   }
 }

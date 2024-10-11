@@ -10,11 +10,11 @@ const DURATION_FORMATS = {
 };
 
 const EmptyPhrase = {
-  NO_POINTS: 'Click New Event to create your first point'
+  EVERYTHING: 'Click New Event to create your first point',
+  FUTURE: 'There are no future events now',
+  PRESENT: 'There are no present events now',
+  PAST: 'There are no past events now'
 };
-
-const MSEC_IN_HOUR = MSEC_IN_SEC * SEC_IN_MIN * MIN_IN_HOUR;
-const MSEC_IN_DAY = MSEC_IN_HOUR * HOUR_IN_DAY;
 
 const FilterType = {
   EVERYTHING: 'everything',
@@ -22,6 +22,21 @@ const FilterType = {
   PRESENT: 'present',
   PAST: 'past'
 };
+
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+const MSEC_IN_HOUR = MSEC_IN_SEC * SEC_IN_MIN * MIN_IN_HOUR;
+const MSEC_IN_DAY = MSEC_IN_HOUR * HOUR_IN_DAY;
 
 const Attribute = {
   CHECKED: 'checked',
@@ -85,11 +100,12 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-const POINT_COUNT = 4;
+const POINT_COUNT = 5;
 
 export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS,
   MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType,
   DateFormat, EditType, FilterType, EmptyPhrase,
-  Attribute, Mode, enabledSortType};
+  Attribute, Mode, enabledSortType, UserAction,
+  UpdateType};
 
 

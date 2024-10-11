@@ -3,7 +3,7 @@ import FormEditView from '../view/form-edit-view';
 import { EditType, Mode } from '../const';
 import { render, replace, remove } from '../framework/render';
 
-export default class PoinPresenter {
+export default class PointPresenter {
   #pointListContainer = null;
   #pointDestination = null;
   #typeOffers = [];
