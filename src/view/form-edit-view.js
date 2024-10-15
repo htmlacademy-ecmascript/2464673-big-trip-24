@@ -4,7 +4,7 @@ import { BLANK_POINT } from '../const';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-// import he from 'he';
+import he from 'he';
 
 function createEditPointEventTypeTemplate(pointType) {
   return (
@@ -156,9 +156,12 @@ function createEditFormTemplate(point, allOffers, destinationsApp, editType) {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${titleLabelTemplate}
             </label>
-            <input class="event__input  event__input--destination"
-            id="event-destination-1" type="text"
-            name="event-destination" value="${titleInputTemplate}"
+            <input class="event__input
+            event__input--destination"
+            id="event-destination-1"
+            type="text"
+            name="event-destination"
+            value="${titleInputTemplate}"
             list="destination-list-1">
             <datalist id="destination-list-1">
               ${createCityList(destinationsApp)}
@@ -178,7 +181,7 @@ function createEditFormTemplate(point, allOffers, destinationsApp, editType) {
               <span class="visually-hidden">Price</span>
               €
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+            <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${he.encode(String(basePrice))}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -281,7 +284,8 @@ export default class FormEditView extends AbstractStatefulView {
     evt.preventDefault();
     const targetDestination = evt.target.value;
     if (targetDestination) {
-      const newDestination = this.#destinations.find((item) => item.name === targetDestination);
+      let newDestination = this.#destinations.find((item) => item.name === targetDestination);
+      newDestination = newDestination ? newDestination : '';
       this.updateElement({
         destination: newDestination.id
       });
