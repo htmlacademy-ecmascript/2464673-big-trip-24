@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+
 const MSEC_IN_SEC = 1000;
 const SEC_IN_MIN = 60;
 const MIN_IN_HOUR = 60;
@@ -9,13 +11,6 @@ const DURATION_FORMATS = {
   mins: 'mm[M]'
 };
 
-const EmptyPhrase = {
-  EVERYTHING: 'Click New Event to create your first point',
-  FUTURE: 'There are no future events now',
-  PRESENT: 'There are no present events now',
-  PAST: 'There are no past events now'
-};
-
 const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
@@ -23,6 +18,12 @@ const FilterType = {
   PAST: 'past'
 };
 
+const EmptyPhrase = {
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.FUTURE]: 'There are no future events now',
+  [FilterType.PRESENT]: 'There are no present events now',
+  [FilterType.PAST]: 'There are no past events now'
+};
 const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
   ADD_POINT: 'ADD_POINT',
@@ -85,14 +86,14 @@ const EditType = {
 };
 
 const BLANK_POINT = {
-  id: null,
+  id: nanoid(),
   basePrice: 0,
   dateFrom: '',
   dateTo: '',
-  destination: '',
+  destination: null,
   isFavorite: false,
   offers: [],
-  type: EventType.TRAIN
+  type: EventType.FLIGHT
 };
 
 const Mode = {

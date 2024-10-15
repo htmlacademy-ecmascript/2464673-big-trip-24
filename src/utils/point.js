@@ -18,4 +18,4 @@ const sortPointTime = (pointA, pointB) => dayjs(pointB.dateTo).diff(dayjs(pointB
 const sortPointPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
 const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
 
-export { convertDate, getEventDuration, isFuturePoint, isPresentPoint, isPastPoint, sortPointPrice, sortPointTime };
+export { isDatesEqual, convertDate, sortPointsByDay, getEventDuration, isFuturePoint, isPresentPoint, isPastPoint, sortPointPrice, sortPointTime };

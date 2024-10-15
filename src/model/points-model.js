@@ -1,6 +1,7 @@
 import { getRandomPoint } from '../mocks/points';
 import { POINT_COUNT } from '../const';
 import Observable from '../framework/observable';
+
 export default class PointsModel extends Observable {
   #points = Array.from({length: POINT_COUNT}, getRandomPoint);
 
@@ -8,7 +9,7 @@ export default class PointsModel extends Observable {
     return this.#points;
   }
 
-  updatepoint(updateType, pointUpdate) {
+  updatePoint(updateType, pointUpdate) {
     const index = this.#points.findIndex((point) => point.id === pointUpdate.id);
 
     if(index === -1) {
@@ -30,7 +31,7 @@ export default class PointsModel extends Observable {
       newPoint
     ];
 
-    this._notify(updateType,newPoint);
+    this._notify(updateType, newPoint);
   }
 
   deletePoint(updateType, pointForDelete) {
