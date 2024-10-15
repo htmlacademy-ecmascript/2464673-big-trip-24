@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import { nanoid } from 'nanoid';
 
 const MSEC_IN_SEC = 1000;
 const SEC_IN_MIN = 60;
