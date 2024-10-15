@@ -2,7 +2,6 @@ import RoutePointView from '../view/route-point-view';
 import FormEditView from '../view/form-edit-view';
 import { EditType, Mode, UpdateType, UserAction } from '../const';
 import { render, replace, remove } from '../framework/render';
-import NewPointPresenter from './new-point-presentr';
 
 export default class PointPresenter {
   #pointListContainer = null;
