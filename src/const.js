@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid';
+
 const MSEC_IN_SEC = 1000;
 const SEC_IN_MIN = 60;
 const MIN_IN_HOUR = 60;
@@ -9,19 +11,33 @@ const DURATION_FORMATS = {
   mins: 'mm[M]'
 };
 
-const EmptyPhrase = {
-  NO_POINTS: 'Click New Event to create your first point'
-};
-
-const MSEC_IN_HOUR = MSEC_IN_SEC * SEC_IN_MIN * MIN_IN_HOUR;
-const MSEC_IN_DAY = MSEC_IN_HOUR * HOUR_IN_DAY;
-
 const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
   PRESENT: 'present',
   PAST: 'past'
 };
+
+const EmptyPhrase = {
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.FUTURE]: 'There are no future events now',
+  [FilterType.PRESENT]: 'There are no present events now',
+  [FilterType.PAST]: 'There are no past events now'
+};
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+const MSEC_IN_HOUR = MSEC_IN_SEC * SEC_IN_MIN * MIN_IN_HOUR;
+const MSEC_IN_DAY = MSEC_IN_HOUR * HOUR_IN_DAY;
 
 const Attribute = {
   CHECKED: 'checked',
@@ -70,14 +86,14 @@ const EditType = {
 };
 
 const BLANK_POINT = {
-  id: null,
+  id: nanoid(),
   basePrice: 0,
   dateFrom: '',
   dateTo: '',
-  destination: '',
+  destination: null,
   isFavorite: false,
   offers: [],
-  type: EventType.TRAIN
+  type: EventType.FLIGHT
 };
 
 const Mode = {
@@ -85,11 +101,12 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-const POINT_COUNT = 4;
+const POINT_COUNT = 5;
 
 export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS,
   MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType,
   DateFormat, EditType, FilterType, EmptyPhrase,
-  Attribute, Mode, enabledSortType};
+  Attribute, Mode, enabledSortType, UserAction,
+  UpdateType};
 
 

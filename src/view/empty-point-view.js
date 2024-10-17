@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view';
 
+
 function createEmptyListPointTemplate(message) {
   return `<p class="trip-events__msg">${message}</p>`;
 }
@@ -7,7 +8,8 @@ function createEmptyListPointTemplate(message) {
 export default class EmptyPointView extends AbstractView {
   #message = null;
 
-  constructor({ message }) {
+  constructor({message}) {
+
     super();
     this.#message = message;
   }

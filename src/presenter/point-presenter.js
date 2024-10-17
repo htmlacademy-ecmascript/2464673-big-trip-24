@@ -1,9 +1,9 @@
 import RoutePointView from '../view/route-point-view';
 import FormEditView from '../view/form-edit-view';
-import { EditType, Mode } from '../const';
+import { EditType, Mode, UpdateType, UserAction } from '../const';
 import { render, replace, remove } from '../framework/render';
 
-export default class PoinPresenter {
+export default class PointPresenter {
   #pointListContainer = null;
   #pointDestination = null;
   #typeOffers = [];
@@ -16,8 +16,10 @@ export default class PoinPresenter {
   #editType = EditType.EDIT;
   #hendleDataChange = null;
   #handleModeChange = null;
+  #handleViewAction = null;
+  #newPointPresenter = null;
 
-  constructor({ pointDestination, typeOffers, onDataChange, onModeChange, pointListContainer, destinations, offers }) {
+  constructor({ pointDestination, newPointPresenter, typeOffers, onDataChange, onModeChange, onhandleViewAction, pointListContainer, destinations, offers }) {
     this.#pointListContainer = pointListContainer;
     this.#pointDestination = pointDestination;
     this.#typeOffers = typeOffers;
@@ -25,6 +27,8 @@ export default class PoinPresenter {
     this.#offers = offers;
     this.#hendleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
+    this.#handleViewAction = onhandleViewAction;
+    this.#newPointPresenter = newPointPresenter;
   }
 
   init(point) {
@@ -38,7 +42,7 @@ export default class PoinPresenter {
       offers: this.#offers,
       destinations: this.#destinations,
       onOpenEditButtonClick: this.#onOpenEditButtonClick,
-      onFavoriteClick: this.#favoriteClickHendler
+      onFavoriteClick: this.#handleFavoriteClick,
     });
 
     this.#pointEditComponent = new FormEditView({
@@ -49,7 +53,8 @@ export default class PoinPresenter {
       destinations: this.#destinations,
       editType: this.#editType,
       onCloseEditButtonClick: this.#onCloseEditButtonClick,
-      onSubmitButtonClick: this.#onSubmitButtonClick
+      onSubmitButtonClick: this.#handleFormSubmit,
+      onDeleteClick: this.#handleDeleteClick,
     });
 
     if (!prevPointComponent || !prevFormEditComponent) {
@@ -102,6 +107,7 @@ export default class PoinPresenter {
   };
 
   #onOpenEditButtonClick = () => {
+    this.#newPointPresenter.destroy();
     this.#replacePointToEditPoint();
   };
 
@@ -109,13 +115,40 @@ export default class PoinPresenter {
     this.#replaceEditPointToPoint();
   };
 
-  #onSubmitButtonClick = (point) => {
-    this.#hendleDataChange(point);
+  // #onSubmitButtonClick = (point) => {
+  //   this.#hendleDataChange(point);
+  //   this.#replaceEditPointToPoint();
+  //   document.removeEventListener('keydown', this.#escKeyDownHandler);
+  // };
+
+  // #favoriteClickHendler = () => {
+  //   this.#hendleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
+  // };
+
+  #handleFormSubmit = (point) => {
+    this.#handleViewAction(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      {...point}
+    );
     this.#replaceEditPointToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #favoriteClickHendler = () => {
-    this.#hendleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
+  #handleDeleteClick = (point) => {
+    this.#handleViewAction(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
+    this.destroy();//возможно
+  };
+
+  #handleFavoriteClick = () => {
+    this.#handleViewAction(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 }
