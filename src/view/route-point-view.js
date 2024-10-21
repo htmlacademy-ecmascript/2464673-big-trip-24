@@ -93,8 +93,6 @@ export default class RoutePointView extends AbstractView {
     this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
-    this.#offers = offers;
-    this.#destinations = destinations;
     this.#onOpenEditButtonClick = onOpenEditButtonClick;
     this.#setEventListeners();
     this.#onFavoriteClick = onFavoriteClick;

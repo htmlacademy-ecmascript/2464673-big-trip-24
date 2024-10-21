@@ -2,19 +2,18 @@ import SortListView from '../view/sort-list-view';
 import PointPresenter from './point-presenter';
 import ListView from '../view/list-view';
 import EmptyPoinView from '../view/empty-point-view';
-import HeaderPresenter from '../presenter/header-presenter';
+
 import NewPointPresenter from './new-point-presentr';
 import { render, RenderPosition } from '../framework/render';
 import { updateItem, sorting } from '../utils-common';
 import { EmptyPhrase, enabledSortType, SortType, UpdateType, UserAction} from '../const';
 import { filter } from '../utils/filter';
 import { sortPointTime, sortPointPrice, sortPointsByDay } from '../utils/point';
-import { FilterType } from '../const';
+import { FilterType, LOADING } from '../const';
 import { remove } from '../framework/render';
 
 export default class MainPresenter {
   #eventsList = new ListView();
-  #headerContainer = null;
   #boardContainer = null;
   #pointsModel = null;
   #filterModel = null;
@@ -27,7 +26,8 @@ export default class MainPresenter {
   #sortComponent = null;
   #emptyPointComponent = null;
   #currentFilterType = FilterType.EVERYTHING;
-  #filterType = null;
+  #pointsLoading = null;
+  #isLoading = true;
   #newPointPresenter = null;
   #currentSortType = SortType.DAY;
   #sortTypes = Object.values(SortType).map((type) => (
@@ -37,21 +37,18 @@ export default class MainPresenter {
       isDisabled: !enabledSortType[type]
     }));
 
-  constructor({ boardContainer, onNewPointDestroy, headerContainer, filterModel, pointsModel, offersModel, destinationsModel }) {
+  constructor({ boardContainer, onNewPointDestroy, filterModel, pointsModel, offersModel, destinationsModel }) {
     this.#boardContainer = boardContainer;
-    this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
-    this.#points = [...this.#pointsModel.points];
-    this.#offers = [...this.#offersModel.offers];
-    this.#destinations = [...this.#destinationsModel.destinations];
     this.#newPointPresenter = new NewPointPresenter({
       pointListContainer: this.#eventsList.element,
+      destinationsModel: this.#destinationsModel,
+      offersModel: this.#offersModel,
       onhandleViewAction: this.#handleViewAction,
-      onNewPointDestroy: onNewPointDestroy,//раздизейбливает кнопку нев ивент
-
+      onNewPointDestroy: onNewPointDestroy,
     });
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -75,7 +72,6 @@ export default class MainPresenter {
   init() {
     this.#renderList();
     this.#renderSort();
-    this.#renderHeader();
   }
 
   createPoint() {
@@ -85,24 +81,31 @@ export default class MainPresenter {
   }
 
   #renderEmptyPoint() {
-    this.#emptyPointComponent = new EmptyPoinView({message: EmptyPhrase[this.#currentFilterType]});
+    this.#emptyPointComponent = new EmptyPoinView({ message: EmptyPhrase[this.#currentFilterType] });
     render(this.#emptyPointComponent, this.#boardContainer);
   }
 
-  #renderHeader() {
-    const headerPresenter = new HeaderPresenter({
-      headerContainer: this.#headerContainer
-    });
-    headerPresenter.init();
-  }
-
   #renderList() {
+    if(this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
     if(!this.points.length) {
       this.#renderEmptyPoint();
       return;
     }
+    this.#renderPointsList();
+  }
+
+  #renderPointsList() {
     render(this.#eventsList, this.#boardContainer);
-    this.#handleSortTypeChange(this.#currentSortType);
+
+    this.#renderPoints();
+  }
+
+  #renderLoading() {
+    this.#pointsLoading = new EmptyPoinView({ message: LOADING });
+    render(this.#pointsLoading, this.#boardContainer);
   }
 
   #sortPoints = (sortType) => {
@@ -145,8 +148,8 @@ export default class MainPresenter {
       pointListContainer: this.#eventsList.element,
       pointDestination: this.#destinationsModel.getDestinationById(point.destination),
       typeOffers: this.#offersModel.getOffersByType(point.type),
-      destinations: this.#destinations,
-      offers: this.#offers,
+      destinations: this.#destinationsModel.destinations,
+      offers: this.#offersModel.offers,
       onDataChange: this.#handleDataChange,
       onModeChange: this.#handleModeChange,
       onhandleViewAction: this.#handleViewAction,
@@ -169,6 +172,7 @@ export default class MainPresenter {
 
     if (resetSortType) {
       remove(this.#sortComponent);
+      remove(this.#pointsLoading);
       this.#currentSortType = SortType.DAY;
       this.#renderSort();
     }
@@ -199,6 +203,11 @@ export default class MainPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearPointsList({ resetSortType: true });
+        this.#renderList();
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#pointsLoading);
         this.#renderList();
         break;
     }

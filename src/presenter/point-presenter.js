@@ -14,7 +14,7 @@ export default class PointPresenter {
   #pointComponent = null;
   #pointEditComponent = null;
   #editType = EditType.EDIT;
-  #hendleDataChange = null;
+  #handleDataChange = null;
   #handleModeChange = null;
   #handleViewAction = null;
   #newPointPresenter = null;
@@ -25,7 +25,7 @@ export default class PointPresenter {
     this.#typeOffers = typeOffers;
     this.#destinations = destinations;
     this.#offers = offers;
-    this.#hendleDataChange = onDataChange;
+    this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
     this.#handleViewAction = onhandleViewAction;
     this.#newPointPresenter = newPointPresenter;
@@ -115,16 +115,6 @@ export default class PointPresenter {
     this.#replaceEditPointToPoint();
   };
 
-  // #onSubmitButtonClick = (point) => {
-  //   this.#hendleDataChange(point);
-  //   this.#replaceEditPointToPoint();
-  //   document.removeEventListener('keydown', this.#escKeyDownHandler);
-  // };
-
-  // #favoriteClickHendler = () => {
-  //   this.#hendleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
-  // };
-
   #handleFormSubmit = (point) => {
     this.#handleViewAction(
       UserAction.UPDATE_POINT,
@@ -141,7 +131,7 @@ export default class PointPresenter {
       UpdateType.MINOR,
       point,
     );
-    this.destroy();//возможно
+    this.destroy();
   };
 
   #handleFavoriteClick = () => {

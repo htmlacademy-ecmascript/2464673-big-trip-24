@@ -206,7 +206,7 @@ export default class FormEditView extends AbstractStatefulView {
   #datepickerStart = null;
   #datepickerEnd = null;
   #onDeleteClick;
-  #typeOffers = null;
+  #typeOffers = [];
 
   constructor({ point: point = BLANK_POINT, onDeleteClick, pointDestination, typeOffers, offers, destinations, editType, onCloseEditButtonClick, onSubmitButtonClick }) {
     super();
@@ -355,14 +355,15 @@ export default class FormEditView extends AbstractStatefulView {
   static parsePointToState(point, pointDestination, typeOffers) {
     return {
       ...point,
-      destination: pointDestination,
+      currentDestination: pointDestination,
       typeOffers
     };
   }
 
   static parseStateToPoint(state) {
     const point = { ...state };
-
+    delete point.currentDestination;
+    delete point.typeOffers;
     return point;
   }
 }
