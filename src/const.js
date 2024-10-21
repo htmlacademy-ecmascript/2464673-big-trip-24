@@ -34,6 +34,7 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT'
 };
 
 const MSEC_IN_HOUR = MSEC_IN_SEC * SEC_IN_MIN * MIN_IN_HOUR;
@@ -103,10 +104,22 @@ const Mode = {
 
 const POINT_COUNT = 5;
 
+const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE'
+};
+
+const AUTHORIZATION = 'Basic er88gh56ddw';
+const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
+const LOADING = 'Loading...';
+
 export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS,
   MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType,
   DateFormat, EditType, FilterType, EmptyPhrase,
   Attribute, Mode, enabledSortType, UserAction,
-  UpdateType};
+  UpdateType, Method, AUTHORIZATION, END_POINT,
+  LOADING};
 
 

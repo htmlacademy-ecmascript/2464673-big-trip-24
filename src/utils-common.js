@@ -4,8 +4,6 @@ dayjs.extend(duration);
 import { MSEC_IN_HOUR, MSEC_IN_DAY, DURATION_FORMATS } from './const.js';
 import { SortType } from './const';
 
-const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
-
 const humanizeDate = (currentDate, format) => currentDate ? dayjs(currentDate).format(format) : '';
 const calculateDuration = (dateFrom, dateTo) => {
   const diff = dayjs(dateTo).diff(dayjs(dateFrom));
@@ -54,6 +52,6 @@ const sorting = {
 };
 
 
-export { getRandomArrayElement, updateItem,
+export { updateItem,
   calculateDuration, humanizeDate, capitalizedString,
   sorting };

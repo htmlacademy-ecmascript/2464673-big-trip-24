@@ -2,22 +2,22 @@ import {render, RenderPosition, remove} from '../framework/render';
 import { UserAction, UpdateType, EditType } from '../const';
 import { nanoid } from 'nanoid';
 import FormEditView from '../view/form-edit-view';
-import DestinationsModel from '../model/destinations-model';
-import OffersModel from '../model/offers-model';
 
 export default class NewPointPresenter {
   #pointListContainer = null;
   #handleViewAction = null;
   #handleDestroy = null;
   #editType = EditType.ADD;
-  #destinatiosModel = new DestinationsModel;
-  #offersModel = new OffersModel;
+  #destinationsModel = null;
+  #offersModel = null;
   #pointAddComponent = null;
 
-  constructor({pointListContainer, onhandleViewAction, onNewPointDestroy }) {
+  constructor({pointListContainer, onhandleViewAction, destinationsModel, offersModel, onNewPointDestroy }) {
     this.#pointListContainer = pointListContainer;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
     this.#handleViewAction = onhandleViewAction;
-    this.#handleDestroy = onNewPointDestroy;//раздизейбливает кнопку нев ивент
+    this.#handleDestroy = onNewPointDestroy;
   }
 
   init() {
@@ -27,7 +27,7 @@ export default class NewPointPresenter {
 
     this.#pointAddComponent = new FormEditView({
       offers: this.#offersModel.offers,
-      destinations: this.#destinatiosModel.destinations,
+      destinations: this.#destinationsModel.destinations,
       editType: this.#editType,
       onDeleteClick: this.#handleDeleteClick,
       onSubmitButtonClick: this.#handleFormSubmit,
@@ -51,7 +51,7 @@ export default class NewPointPresenter {
     this.#handleViewAction(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      {id: nanoid(), ...point},
+      { id: nanoid(), ...point },
     );
     this.destroy();
   };
