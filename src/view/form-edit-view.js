@@ -1,5 +1,5 @@
 import { EditType, EventType } from '../const';
-import { capitalizedString } from '../utils-common';
+import { capitalizedString, humanizeDate } from '../utils-common';
 import { BLANK_POINT } from '../const';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
@@ -122,7 +122,7 @@ function createCityList(destinations) {
 }
 
 function createEditFormTemplate(point, allOffers, destinationsApp, editType) {
-  const { basePrice, offers, destination, type, isDisabled, isSaving} = point;
+  const { type, basePrice, dateFrom, dateTo, offers, destination, isDisabled, isSaving } = point;
   const eventTypesTemplate = createEditPointEventTypeTemplate(point, type);
   const offersByPointType = allOffers.find((offer) => offer.type === type);
   const offersTemplate = offers ? createEditPointOfferTemplate(offersByPointType, offers, point) : '';
@@ -175,10 +175,10 @@ function createEditFormTemplate(point, allOffers, destinationsApp, editType) {
 
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 12:25" ${isDisabled ? 'disabled' : ''}>
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateFrom, 'DD/MM/YY HH:mm')}" ${isDisabled ? 'disabled' : ''}>
             —
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35" ${isDisabled ? 'disabled' : ''}>
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, 'DD/MM/YY HH:mm')}" ${isDisabled ? 'disabled' : ''}>
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -262,7 +262,7 @@ export default class FormEditView extends AbstractStatefulView {
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#deleteClickHandler);
 
     this.#setDateFromPicker();
-    this.#setDatepickerEnd();
+    this.#setDateToPicker();
   }
 
   #closeOpenEditButtonClickHandler = (evt) => {
@@ -345,13 +345,13 @@ export default class FormEditView extends AbstractStatefulView {
     );
   }
 
-  #setDatepickerEnd() {
+  #setDateToPicker() {
     this.#dateToPicker = flatpickr(
       this.element.querySelector('#event-end-time-1'),
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-        defaultDate: this._state.dateFrom,
+        defaultDate: this._state.dateTo,
         'time_24hr': true,
         onChange: this.#dateToChangeHandler,
         minDate: this._state.dateFrom,
@@ -372,7 +372,6 @@ export default class FormEditView extends AbstractStatefulView {
 
   static parseStateToPoint(state) {
     const point = { ...state,
-      // destination: state.destination.id
     };
     delete point.typeOffers;
     delete point.isDisabled;
