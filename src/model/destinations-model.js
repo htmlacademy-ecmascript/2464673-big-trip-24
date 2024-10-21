@@ -20,5 +20,5 @@ export default class DestinationsModel {
 
   getDestinationById(id) {
     return this.#destinations.find((destination) => destination.id === id) ?? [];
-  }// возможно придется переписать
+  }
 }

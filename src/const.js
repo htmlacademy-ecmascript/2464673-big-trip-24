@@ -87,7 +87,6 @@ const EditType = {
 };
 
 const BLANK_POINT = {
-  id: nanoid(),
   basePrice: 0,
   dateFrom: '',
   dateTo: '',
@@ -102,8 +101,6 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-const POINT_COUNT = 5;
-
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
@@ -111,15 +108,21 @@ const Method = {
   DELETE: 'DELETE'
 };
 
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
+
 const AUTHORIZATION = 'Basic er88gh56ddw';
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
-const LOADING = 'Loading...';
+const LOADING_MASSAGE = 'Loading...';
 
-export { BLANK_POINT, POINT_COUNT, DURATION_FORMATS,
+export { BLANK_POINT, DURATION_FORMATS,
   MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType,
   DateFormat, EditType, FilterType, EmptyPhrase,
   Attribute, Mode, enabledSortType, UserAction,
   UpdateType, Method, AUTHORIZATION, END_POINT,
-  LOADING};
+  LOADING_MASSAGE, TimeLimit};
 
 
