@@ -19,7 +19,6 @@ export default class PointsModel extends Observable {
   }
 
   async init() {
-    console.log('Hello2');
     try {
       await this.#offrsModel.init();
       await this.#destinationsModel.init();
