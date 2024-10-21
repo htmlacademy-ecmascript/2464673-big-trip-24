@@ -52,7 +52,6 @@ export default class PointsModel extends Observable {
       throw new Error('Can\'t update point');
     }
   }
-  //переписала
 
   async addPoint(updateType, newPoint) {
     try {
