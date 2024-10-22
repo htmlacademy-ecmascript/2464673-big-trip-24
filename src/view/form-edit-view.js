@@ -4,7 +4,6 @@ import { BLANK_POINT } from '../const';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-// import he from 'he';
 
 function createEditPointEventTypeTemplate(point, pointType) {
   const { isDisabled } = point;
@@ -210,7 +209,6 @@ export default class FormEditView extends AbstractStatefulView {
   #onSubmitButtonClick = null;
   #dateFromPicker = null;
   #dateToPicker = null;
-
   #onDeleteClick;
   #typeOffers = [];
 
