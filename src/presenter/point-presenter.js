@@ -14,18 +14,16 @@ export default class PointPresenter {
   #pointComponent = null;
   #pointEditComponent = null;
   #editType = EditType.EDIT;
-  #handleDataChange = null;
   #handleModeChange = null;
   #handleViewAction = null;
   #newPointPresenter = null;
 
-  constructor({ pointDestination, newPointPresenter, typeOffers, onDataChange, onModeChange, onhandleViewAction, pointListContainer, destinations, offers }) {
+  constructor({ pointDestination, newPointPresenter, typeOffers, onModeChange, onhandleViewAction, pointListContainer, destinations, offers }) {
     this.#pointListContainer = pointListContainer;
     this.#pointDestination = pointDestination;
     this.#typeOffers = typeOffers;
     this.#destinations = destinations;
     this.#offers = offers;
-    this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
     this.#handleViewAction = onhandleViewAction;
     this.#newPointPresenter = newPointPresenter;
