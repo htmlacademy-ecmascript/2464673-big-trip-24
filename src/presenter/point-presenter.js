@@ -18,7 +18,7 @@ export default class PointPresenter {
   #handleViewAction = null;
   #newPointPresenter = null;
 
-  constructor({ pointDestination, newPointPresenter, typeOffers, onDataChange, onModeChange, onhandleViewAction, pointListContainer, destinations, offers }) {
+  constructor({ pointDestination, newPointPresenter, typeOffers, onModeChange, onhandleViewAction, pointListContainer, destinations, offers }) {
     this.#pointListContainer = pointListContainer;
     this.#pointDestination = pointDestination;
     this.#typeOffers = typeOffers;

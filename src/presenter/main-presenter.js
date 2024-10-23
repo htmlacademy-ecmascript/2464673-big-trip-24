@@ -156,7 +156,6 @@ export default class MainPresenter {
       typeOffers: this.#offersModel.getOffersByType(point.type),
       destinations: this.#destinationsModel.destinations,
       offers: this.#offersModel.offers,
-      onDataChange: this.#handleDataChange,
       onModeChange: this.#handleModeChange,
       onhandleViewAction: this.#handleViewAction,
       newPointPresenter: this.#newPointPresenter
