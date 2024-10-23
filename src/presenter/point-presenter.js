@@ -14,7 +14,6 @@ export default class PointPresenter {
   #pointComponent = null;
   #pointEditComponent = null;
   #editType = EditType.EDIT;
-  #handleDataChange = null;
   #handleModeChange = null;
   #handleViewAction = null;
   #newPointPresenter = null;
@@ -25,7 +24,6 @@ export default class PointPresenter {
     this.#typeOffers = typeOffers;
     this.#destinations = destinations;
     this.#offers = offers;
-    this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
     this.#handleViewAction = onhandleViewAction;
     this.#newPointPresenter = newPointPresenter;

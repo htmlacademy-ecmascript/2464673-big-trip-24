@@ -3,7 +3,7 @@ import PointPresenter from './point-presenter';
 import ListView from '../view/list-view';
 import EmptyPoinView from '../view/empty-point-view';
 
-import NewPointPresenter from './new-point-presentr';
+import NewPointPresenter from './new-point-presenter';
 import { render, RenderPosition } from '../framework/render';
 import { updateItem, sorting } from '../utils-common';
 import { EmptyPhrase, TimeLimit, enabledSortType, SortType, UpdateType, UserAction } from '../const';
