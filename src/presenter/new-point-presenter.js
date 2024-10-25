@@ -1,4 +1,4 @@
-import {render, RenderPosition, remove} from '../framework/render';
+import { render, RenderPosition, remove } from '../framework/render';
 import { UserAction, UpdateType, EditType } from '../const';
 import FormEditView from '../view/form-edit-view';
 

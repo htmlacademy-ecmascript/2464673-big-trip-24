@@ -25,7 +25,7 @@ const capitalizedString = (string) => string.replace(string[0], string[0].toUppe
 
 const updateItem = (items, update) => items.map((item) => item.id === update.id ? update : item);
 
-function getPointsByDate(pointA, pointB) {
+function getPointsByDate(pointB, pointA) {
   return dayjs(pointB.dateFrom).diff(dayjs(pointA.dateFrom));
 }
 
@@ -37,6 +37,19 @@ function getPointsByTime(pointA, pointB) {
   const pointADuration = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
   const pointBDuration = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
   return pointBDuration - pointADuration;
+}
+
+function getCheckedOffers(offers, type) {
+  const offerByType = offers.find((offer) => offer.type === type);
+  return offerByType ? offerByType.offers : [];
+}
+
+function getTotalOffers(offersID = [], availableOffers = []) {
+  const offersTotal = offersID.reduce((totalCost, id) => {
+    const offer = availableOffers.find((item) => item.id === id);
+    return totalCost + (offer ? offer.price : 0);
+  }, 0);
+  return offersTotal;
 }
 
 const sorting = {
@@ -52,6 +65,6 @@ const sorting = {
 };
 
 
-export { updateItem,
+export { getPointsByDate, getCheckedOffers, getTotalOffers, updateItem,
   calculateDuration, humanizeDate, capitalizedString,
   sorting };

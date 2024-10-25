@@ -37,7 +37,12 @@ const newPointButtonComponent = new NewPointButtonView({
   onButtonClick: handleNewPointButtonClick
 });
 
-const headerPresenter = new HeaderPresenter(infoElement);
+const headerPresenter = new HeaderPresenter({
+  headerContainer: infoElement,
+  pointsModel: pointsModel,
+  offersModel: offersModel,
+  destinationsModel: destinationsModel
+});
 
 function handleNewPointButtonClick() {
   mainPresenter.createPoint();
@@ -54,11 +59,8 @@ const filterPresenter = new FilterPresenter({
   pointsModel: pointsModel
 });
 
-headerPresenter.init();
-filterPresenter.init();
 mainPresenter.init();
-pointsModel.init()
-  .finally(() => {
-    render(newPointButtonComponent, infoElement, RenderPosition.BEFOREEND);
-  });
-
+filterPresenter.init();
+render(newPointButtonComponent, infoElement, RenderPosition.BEFOREEND);
+pointsModel.init();
+headerPresenter.init();

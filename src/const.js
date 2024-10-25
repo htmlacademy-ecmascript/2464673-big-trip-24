@@ -2,6 +2,10 @@ const MSEC_IN_SEC = 1000;
 const SEC_IN_MIN = 60;
 const MIN_IN_HOUR = 60;
 const HOUR_IN_DAY = 24;
+const AUTHORIZATION = 'Basic er88gh56ddw';
+const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
+const EMPTY_PRICE = 0;
+const DESTINATIONS_COUNT = 3;
 
 const DURATION_FORMATS = {
   days: 'DD[D] HH[H] mm[M]',
@@ -22,6 +26,12 @@ const EmptyPhrase = {
   [FilterType.PRESENT]: 'There are no present events now',
   [FilterType.PAST]: 'There are no past events now'
 };
+
+const Feedback = {
+  LOADING_MASSAGE: 'Loading...',
+  FAILED_MASSAGE: 'Failed to load latest route information',
+};
+
 const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
   ADD_POINT: 'ADD_POINT',
@@ -32,8 +42,10 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
-  INIT: 'INIT'
+  INIT: 'INIT',
+  ERROR: 'ERROR'
 };
+
 
 const MSEC_IN_HOUR = MSEC_IN_SEC * SEC_IN_MIN * MIN_IN_HOUR;
 const MSEC_IN_DAY = MSEC_IN_HOUR * HOUR_IN_DAY;
@@ -85,7 +97,7 @@ const EditType = {
 };
 
 const BLANK_POINT = {
-  basePrice: 0,
+  basePrice: EMPTY_PRICE,
   dateFrom: '',
   dateTo: '',
   destination: null,
@@ -111,16 +123,11 @@ const TimeLimit = {
   UPPER_LIMIT: 1000,
 };
 
-
-const AUTHORIZATION = 'Basic er88gh56ddw';
-const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
-const LOADING_MASSAGE = 'Loading...';
-
-export { BLANK_POINT, DURATION_FORMATS,
+export { EMPTY_PRICE, DESTINATIONS_COUNT, BLANK_POINT, DURATION_FORMATS,
   MSEC_IN_HOUR, MSEC_IN_DAY, EventType, SortType,
   DateFormat, EditType, FilterType, EmptyPhrase,
   Attribute, Mode, enabledSortType, UserAction,
   UpdateType, Method, AUTHORIZATION, END_POINT,
-  LOADING_MASSAGE, TimeLimit};
+  TimeLimit, Feedback};
 
 
