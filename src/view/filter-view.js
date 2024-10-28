@@ -3,7 +3,7 @@ import { capitalizedString } from '../utils-common';
 import { Attribute } from '../const';
 
 function createFilterItemTemplate(filter, currentFilterType) {
-  const { type } = filter;
+  const { type, count } = filter;
   return (
     `<div class="trip-filters__filter">
     <input id="filter-${type}"
@@ -12,6 +12,7 @@ function createFilterItemTemplate(filter, currentFilterType) {
     name="trip-filter"
     value="${type}"
     ${type === currentFilterType ? Attribute.CHECKED : ''}
+    ${count === 0 ? Attribute.DISABLED : ''}
 
     >
     <label class="trip-filters__filter-label"

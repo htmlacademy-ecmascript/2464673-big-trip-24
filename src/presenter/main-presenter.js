@@ -5,11 +5,10 @@ import EmptyPoinView from '../view/empty-point-view';
 
 import NewPointPresenter from './new-point-presenter';
 import { render, RenderPosition } from '../framework/render';
-import { updateItem, sorting } from '../utils-common';
-import { EmptyPhrase, TimeLimit, enabledSortType, SortType, UpdateType, UserAction } from '../const';
+import { sorting } from '../utils-common';
+import { FilterType, EmptyPhrase, TimeLimit, enabledSortType, SortType, UpdateType, UserAction, Feedback } from '../const';
 import { filter } from '../utils/filter';
 import { sortPointTime, sortPointPrice, sortPointsByDay } from '../utils/point';
-import { FilterType, LOADING_MASSAGE } from '../const';
 import { remove } from '../framework/render';
 import UiBlocker from '../framework/ui-blocker/ui-blocker';
 
@@ -27,6 +26,8 @@ export default class MainPresenter {
   #sortComponent = null;
   #emptyPointComponent = null;
   #currentFilterType = FilterType.EVERYTHING;
+  #pointsError = null;
+  #onNewPointDestroy = null;
   #pointsLoading = null;
   #isLoading = true;
   #newPointPresenter = null;
@@ -49,12 +50,14 @@ export default class MainPresenter {
     this.#filterModel = filterModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
+    this.#onNewPointDestroy = onNewPointDestroy;
+
     this.#newPointPresenter = new NewPointPresenter({
       pointListContainer: this.#eventsList.element,
       destinationsModel: this.#destinationsModel,
       offersModel: this.#offersModel,
       onhandleViewAction: this.#handleViewAction,
-      onNewPointDestroy: onNewPointDestroy,
+      onNewPointDestroy: this.#onNewPointDestroy,
     });
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -77,13 +80,15 @@ export default class MainPresenter {
 
   init() {
     this.#renderList();
-    this.#renderSort();
   }
 
   createPoint() {
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
+    if(this.#emptyPointComponent) {
+      remove(this.#emptyPointComponent);
+    }
   }
 
   #renderEmptyPoint() {
@@ -100,6 +105,9 @@ export default class MainPresenter {
       this.#renderEmptyPoint();
       return;
     }
+    if(!this.#sortComponent) {
+      this.#renderSort();
+    }
     this.#renderPointsList();
   }
 
@@ -110,7 +118,7 @@ export default class MainPresenter {
   }
 
   #renderLoading() {
-    this.#pointsLoading = new EmptyPoinView({ message: LOADING_MASSAGE });
+    this.#pointsLoading = new EmptyPoinView({ message: Feedback.LOADING_MASSAGE });
     render(this.#pointsLoading, this.#boardContainer);
   }
 
@@ -133,11 +141,6 @@ export default class MainPresenter {
 
     render(this.#sortComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
   }
-
-  #handleDataChange = (updatedPoint) => {
-    this.#points = updateItem(this.#points, updatedPoint);
-    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
-  };
 
   #handleModeChange = () => {
     this.#pointPresenters.forEach((presenter) => {
@@ -215,6 +218,11 @@ export default class MainPresenter {
     this.#uiBlocker.unblock();
   };
 
+  #renderError() {
+    this.#pointsError = new EmptyPoinView({ message: Feedback.FAILED_MASSAGE });
+    render(this.#pointsError, this.#boardContainer);
+  }
+
   #handleModelEvent = (updateType, pointData) => {
     switch (updateType) {
       case UpdateType.PATCH:
@@ -232,6 +240,12 @@ export default class MainPresenter {
         this.#isLoading = false;
         remove(this.#pointsLoading);
         this.#renderList();
+        this.#onNewPointDestroy();
+        break;
+      case UpdateType.ERROR:
+        this.#isLoading = false;
+        remove(this.#pointsLoading);
+        this.#renderError();
         break;
     }
   };

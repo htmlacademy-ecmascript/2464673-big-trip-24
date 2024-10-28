@@ -209,7 +209,7 @@ export default class FormEditView extends AbstractStatefulView {
   #onSubmitButtonClick = null;
   #dateFromPicker = null;
   #dateToPicker = null;
-  #onDeleteClick;
+  #onDeleteClick = null;
   #typeOffers = [];
 
   constructor({ point: point = BLANK_POINT, onDeleteClick, pointDestination, typeOffers, offers, destinations, editType, onCloseEditButtonClick, onSubmitButtonClick }) {
