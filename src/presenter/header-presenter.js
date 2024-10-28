@@ -5,9 +5,9 @@ import { DESTINATIONS_COUNT } from '../const';
 
 export default class HeaderPresenter {
   #headerContainer = null;
-  #pointsModel = [];
-  #offersModel = [];
-  #destinationsModel = [];
+  #pointsModel = null;
+  #offersModel = null;
+  #destinationsModel = null;
   #infoComponent = null;
   #sortedPoints = [];
 
@@ -16,7 +16,6 @@ export default class HeaderPresenter {
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
-
     this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
